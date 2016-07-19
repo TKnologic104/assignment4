@@ -17,5 +17,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		System.out.println("GLHF");
+		Craig test1 = new Craig();
+		Critter.critterWorld.add(test1);
+		test1.displayWorld1();
 	}
 }
