@@ -28,4 +28,7 @@ public class Algae extends TestCritter {
 		int result = x + y;
 		return result;
 	}
+	public void someOtherThing() {
+		//TODO stuff
+	}
 }
