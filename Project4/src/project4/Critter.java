@@ -71,11 +71,14 @@ public abstract class Critter {
 				for (int k = 0; k < getPopulation().size(); k++) {
 					if(((getPopulation().get(k)).getX_coord() == j) && ((getPopulation().get(k)).getY_coord() == i)) {
 						b[i][j] = getPopulation().get(k).toString();
+						break;
 					} 
 					else {
-						b[i][j] = "-";
+						b[i][j] = " ";
 					}
 				}
+				b[0][j] = "-";
+				b[y-1][j] = "-";
 			}
 			b[i][0] = "|";
 			b[i][x-1] = "|";
@@ -153,6 +156,20 @@ public abstract class Critter {
 		default:
 			System.out.println("invalid direction");
 			break;
+		}
+		int X = getX_coord();
+		int Y = getY_coord();
+		if (X > Params.world_width - 2){
+			setX_coord(X - Params.world_width+2);
+		}
+		if (X < 1){
+			setX_coord(X + Params.world_width-2);
+		}
+		if (Y > Params.world_height-2){
+			setY_coord(Y - Params.world_height+2);
+		}
+		if (Y < 1){
+			setY_coord(Y + Params.world_height-2);
 		}
 		energy -= Params.walk_energy_cost;
 	}
