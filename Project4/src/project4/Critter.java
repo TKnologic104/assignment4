@@ -20,8 +20,10 @@ import java.util.List;
  */
 public abstract class Critter {
 
-	public static List<Critter> critterWorld = new java.util.ArrayList<Critter>();
+	public static List<Critter> critterWorld = new java.util.ArrayList<>();
 
+	/*
+	
 	public static void displayWorld1() {
 		for (int i = 1; i <= Params.world_height; i++) {
 			for (int j = 1; j <= Params.world_width; j++) {
@@ -47,7 +49,7 @@ public abstract class Critter {
 					}
 				}
 				for (int k = 0; k < critterWorld.size(); k++) {
-					if (((critterWorld.get(k)).x_coord == j) && ((critterWorld.get(k)).y_coord == i)) {
+					if (((critterWorld.get(k)).getX_coord() == j) && ((critterWorld.get(k)).y_coord == i)) {
 						System.out.print(critterWorld.get(k).toString());
 					} else {
 						System.out.print("-");
@@ -56,6 +58,41 @@ public abstract class Critter {
 			}
 		}
 
+	}
+
+	*/
+	
+	public static void displayWorld2(){
+		int y = Params.world_height;
+		int x = Params.world_width;
+
+		String[][] b = new String[y][x];
+
+		for (int i = 0; i < y; i++) {
+			for (int j = 0; j < x; j++) {
+				for (int k = 0; k < critterWorld.size(); k++) {
+					if(((critterWorld.get(k)).getX_coord() == j) && ((critterWorld.get(k)).getY_coord() == i)) {
+						b[i][j] = critterWorld.get(k).toString();
+					} 
+					else {
+						b[i][j] = "-";
+					}
+				}
+			}
+			b[i][0] = "|";
+			b[i][x-1] = "|";
+		}
+		b[0][x-1] = "+";
+		b[0][0] = "+";
+		b[y-1][x-1] = "+";
+		b[y-1][0] = "+";
+		
+		for (int i = 0; i < y; i++) {
+			for (int j = 0; j < x; j++) {
+				System.out.print((b[i][j]));
+			}
+			System.out.println();
+		}
 	}
 
 	private static java.util.Random rand = new java.util.Random();
@@ -88,32 +125,32 @@ public abstract class Critter {
 	protected final void walk(int direction) {
 		switch (direction) {
 		case 0:
-			x_coord += 1; // go straight right
+			setX_coord(getX_coord() + 1); // go straight right
 			break;
 		case 1:
-			x_coord += 1; // go upper right
-			y_coord -= 1;
+			setX_coord(getX_coord() + 1); // go upper right
+			setY_coord(getY_coord() - 1);
 			break;
 		case 2:
-			y_coord -= 1; // go straight up
+			setY_coord(getY_coord() - 1); // go straight up
 			break;
 		case 3:
-			x_coord -= 1; // go upper left
-			y_coord -= 1;
+			setX_coord(getX_coord() - 1); // go upper left
+			setY_coord(getY_coord() - 1);
 			break;
 		case 4:
-			x_coord -= 1; // go straight left
+			setX_coord(getX_coord() - 1); // go straight left
 			break;
 		case 5:
-			x_coord -= 1; // go lower left
-			y_coord += 1;
+			setX_coord(getX_coord() - 1); // go lower left
+			setY_coord(getY_coord() + 1);
 			break;
 		case 6:
-			y_coord += 1; // go straight down
+			setY_coord(getY_coord() + 1); // go straight down
 			break;
 		case 7:
-			x_coord += 1; // go lower right
-			y_coord += 1;
+			setX_coord(getX_coord() + 1); // go lower right
+			setY_coord(getY_coord() + 1);
 			break;
 		default:
 			System.out.println("invalid direction");
@@ -125,32 +162,32 @@ public abstract class Critter {
 	protected final void run(int direction) {
 		switch (direction) {
 		case 0:
-			x_coord += 2; // go straight right
+			setX_coord(getX_coord() + 2); // go straight right
 			break;
 		case 1:
-			x_coord += 2; // go upper right
-			y_coord -= 2;
+			setX_coord(getX_coord() + 2); // go upper right
+			setY_coord(getY_coord() - 2);
 			break;
 		case 2:
-			y_coord -= 2; // go straight up
+			setY_coord(getY_coord() - 2); // go straight up
 			break;
 		case 3:
-			x_coord -= 2; // go upper left
-			y_coord -= 2;
+			setX_coord(getX_coord() - 2); // go upper left
+			setY_coord(getY_coord() - 2);
 			break;
 		case 4:
-			x_coord -= 2; // go straight left
+			setX_coord(getX_coord() - 2); // go straight left
 			break;
 		case 5:
-			x_coord -= 2; // go lower left
-			y_coord += 2;
+			setX_coord(getX_coord() - 2); // go lower left
+			setY_coord(getY_coord() + 2);
 			break;
 		case 6:
-			y_coord += 2; // go straight down
+			setY_coord(getY_coord() + 2); // go straight down
 			break;
 		case 7:
-			x_coord += 2; // go lower right
-			y_coord += 2;
+			setX_coord(getX_coord() + 2); // go lower right
+			setY_coord(getY_coord() + 2);
 			break;
 		default:
 			System.out.println("invalid direction");
@@ -216,11 +253,11 @@ public abstract class Critter {
 		protected void setEnergy(int new_energy_value) {
 			super.energy = new_energy_value;
 		}
-
+		
 		protected void setXCoord(int new_x_coord) {
 			super.x_coord = new_x_coord;
 		}
-
+		
 		protected void setYCoord(int new_y_coord) {
 			super.y_coord = new_y_coord;
 		}
@@ -237,4 +274,35 @@ public abstract class Critter {
 
 	public static void displayWorld() {
 	}
+	
+	
+	//I created these
+	public void setX(int x){
+		this.setX_coord(x);
+		return;
+	}
+	
+	public void setY(int y){
+		this.setY_coord(y);
+		return;
+	}
+
+	public int getX_coord() {
+		return x_coord;
+	}
+
+	public void setX_coord(int x_coord) {
+		this.x_coord = x_coord;
+	}
+
+	public int getY_coord() {
+		return y_coord;
+	}
+
+	public void setY_coord(int y_coord) {
+		this.y_coord = y_coord;
+	}
+	
+	
+	
 }

@@ -11,14 +11,23 @@
  * Summer 2016
  */
 package project4;
+import java.util.Collection;
 import java.util.Scanner;
+
+
 
 public class Main {
 
 	public static void main(String[] args) {
 		System.out.println("GLHF");
 		Craig test1 = new Craig();
+		test1.setX(0);
+		test1.setX(4);
+		//ThisClassIsForTesting test2 = new ThisClassIsForTesting();
 		Critter.critterWorld.add(test1);
-		test1.displayWorld1(); //displays world
+		//Critter.critterWorld.add(test2);
+		
+		//Critter.displayWorld1(); //displays world
+		Critter.displayWorld2();
 	}
 }
