@@ -20,8 +20,6 @@ import java.util.List;
  */
 public abstract class Critter {
 
-	public static List<Critter> critterWorld = new java.util.ArrayList<>();
-
 	/*
 	
 	public static void displayWorld1() {
@@ -48,9 +46,9 @@ public abstract class Critter {
 						continue;
 					}
 				}
-				for (int k = 0; k < critterWorld.size(); k++) {
-					if (((critterWorld.get(k)).getX_coord() == j) && ((critterWorld.get(k)).y_coord == i)) {
-						System.out.print(critterWorld.get(k).toString());
+				for (int k = 0; k < population.size(); k++) {
+					if (((population.get(k)).getX_coord() == j) && ((population.get(k)).y_coord == i)) {
+						System.out.print(population.get(k).toString());
 					} else {
 						System.out.print("-");
 					}
@@ -70,9 +68,9 @@ public abstract class Critter {
 
 		for (int i = 0; i < y; i++) {
 			for (int j = 0; j < x; j++) {
-				for (int k = 0; k < critterWorld.size(); k++) {
-					if(((critterWorld.get(k)).getX_coord() == j) && ((critterWorld.get(k)).getY_coord() == i)) {
-						b[i][j] = critterWorld.get(k).toString();
+				for (int k = 0; k < getPopulation().size(); k++) {
+					if(((getPopulation().get(k)).getX_coord() == j) && ((getPopulation().get(k)).getY_coord() == i)) {
+						b[i][j] = getPopulation().get(k).toString();
 					} 
 					else {
 						b[i][j] = "-";
@@ -267,7 +265,7 @@ public abstract class Critter {
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
 
 	public static void worldTimeStep() {
-		for (Critter c : population) {
+		for (Critter c : getPopulation()) {
 			c.doTimeStep();
 		}
 	}
@@ -301,6 +299,15 @@ public abstract class Critter {
 
 	public void setY_coord(int y_coord) {
 		this.y_coord = y_coord;
+	}
+
+	
+	public static List<Critter> getPopulation() {
+		return population;
+	}
+
+	public static void setPopulation(List<Critter> population) {
+		Critter.population = population;
 	}
 	
 	
