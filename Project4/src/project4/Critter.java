@@ -165,11 +165,10 @@ public abstract class Critter {
 	}
 	
 	public static void displayWorld() {
-		System.out.println("***************");
 		String[][] out = new String[Params.world_height + 2][Params.world_width + 2];
 		for (int i = 0; i <= Params.world_height + 1;i++){
 			for (int j = 0; j <= Params.world_width + 1;j++){
-			out[i][j] = "-";
+			out[i][j] = " ";
 			}
 		}
 
@@ -178,8 +177,8 @@ public abstract class Critter {
 		out[0][Params.world_width + 1] = "+";
 		out[Params.world_height + 1][Params.world_width + 1] = "+";
 		for (int i = 1; i <= Params.world_width;i++){
-			out[0][i] = "_";
-			out[Params.world_height + 1][i] = "_";
+			out[0][i] = "-";
+			out[Params.world_height + 1][i] = "-";
 		}
 		for (int i = 1; i <= Params.world_height;i++){
 			out[i][0] = "|";
