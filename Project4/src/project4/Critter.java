@@ -34,6 +34,7 @@ public abstract class Critter {
 	
 	private int energy = 0;
 	protected int getEnergy() { return energy; }
+	protected void setEnergy(int energy) { this.energy = energy; }
 	
 	private int x_coord;
 	private int y_coord;
@@ -69,6 +70,12 @@ public abstract class Critter {
 	}
 	
 	protected final void reproduce(Critter offspring, int direction) {
+		if (this.getEnergy() < Params.min_reproduce_energy) {
+			return;
+		}
+		offspring.setEnergy(this.getEnergy() / 2);
+		this.setEnergy((int)Math.ceil(this.getEnergy() / 2.0));
+		
 	}
 
 	public abstract void doTimeStep();
