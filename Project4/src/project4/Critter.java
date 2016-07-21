@@ -119,6 +119,21 @@ public abstract class Critter {
 			System.out.println("invalid direction");
 			break;
 		}
+		
+		//wrap around code.
+		if (x_coord == Params.world_width+1){
+			x_coord = x_coord - Params.world_width;
+		}
+		if (x_coord == 0){
+			x_coord = Params.world_width;
+		}
+		
+		if (y_coord == Params.world_height+1){
+			y_coord = y_coord - Params.world_height;
+		}
+		if (y_coord == 0){
+			y_coord = Params.world_height;
+		}
 		/* stage babies */
 		babies.add(offspring);
 	}
