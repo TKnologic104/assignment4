@@ -19,7 +19,6 @@ import java.util.List;
  * no new public, protected or default-package code or data can be added to Critter
  */
 public abstract class Critter {
-	
 	private static java.util.Random rand = new java.util.Random();
 	public static int getRandomInt(int max) {
 		return rand.nextInt(max);
@@ -39,60 +38,34 @@ public abstract class Critter {
 	private int x_coord;
 	private int y_coord;
 	
+	public final void setx(int x){
+		this.x_coord = x;
+		return;
+	}
+	
+	protected final void sety(int y){
+		this.y_coord = y;
+		return;
+	}
 	protected final void walk(int direction) {
-		switch (direction) {
-			case 0: x_coord += 1;	//go straight right
-					break;
-			case 1: x_coord += 1;	//go upper right
-					y_coord -= 1;
-					break;
-			case 2: y_coord -= 1;	//go straight up
-					break;
-			case 3: x_coord -= 1;	//go upper left
-					y_coord -= 1;
-					break;
-			case 4: x_coord -= 1;	//go straight left
-					break;
-			case 5: x_coord -= 1;	//go lower left
-					y_coord += 1;
-					break;
-			case 6: y_coord += 1;	//go straight down
-					break;
-			case 7: x_coord += 1;	//go lower right
-					y_coord += 1;
-					break;
-			default: System.out.println("invalid direction");
-					break;	
+		this.x_coord = this.x_coord + direction;
+		if (this.x_coord > Params.world_width){
+			this.x_coord = 1;
 		}
-		energy -= Params.walk_energy_cost;
+		if (this.x_coord < 1){
+			this.x_coord = Params.world_width + 1;
+		}
+		this.y_coord = this.y_coord + direction;
+		if (this.y_coord > Params.world_height){
+			this.y_coord = 1;
+		}
+		if (this.y_coord < 1){
+			this.y_coord = Params.world_height + 1;
+		}
 	}
 	
 	protected final void run(int direction) {
-		switch (direction) {
-		case 0: x_coord += 2;	//go straight right
-				break;
-		case 1: x_coord += 2;	//go upper right
-				y_coord -= 2;
-				break;
-		case 2: y_coord -= 2;	//go straight up
-				break;
-		case 3: x_coord -= 2;	//go upper left
-				y_coord -= 2;
-				break;
-		case 4: x_coord -= 2;	//go straight left
-				break;
-		case 5: x_coord -= 2;	//go lower left
-				y_coord += 2;
-				break;
-		case 6: y_coord += 2;	//go straight down
-				break;
-		case 7: x_coord += 2;	//go lower right
-				y_coord += 2;
-				break;
-		default: System.out.println("invalid direction");
-				break;	
-	}
-	energy -= Params.run_energy_cost;
+		
 	}
 	
 	protected final void reproduce(Critter offspring, int direction) {
@@ -105,12 +78,50 @@ public abstract class Critter {
 	 * critter_class_name must be the name of a concrete subclass of Critter, if not
 	 * an InvalidCritterException must be thrown
 	 */
-	public static void makeCritter(String critter_class_name) throws InvalidCritterException {
+	public static void makeCritter(String critter_class_name) throws InvalidCritterException{
+		Class<?> cls = null;
+		try {
+			cls = Class.forName(critter_class_name);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("Error while creating class");
+		}
+		Object ob = null;
+		try {
+			ob = cls.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("Error while creating class");
+
+		} 
+		population.add((Critter) ob);
 	}
 	
 	public static List<Critter> getInstances(String critter_class_name) throws InvalidCritterException {
 		List<Critter> result = new java.util.ArrayList<Critter>();
-	
+		Object ob = null;
+		try {
+			Class cls = Class.forName(critter_class_name);
+			try {
+				ob = cls.newInstance();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for (int k = 0; k < getPopulation().size(); k++){
+			if ((getPopulation().get(k)).getClass().isInstance(ob)){
+				result.add(getPopulation().get(k));
+			}
+		}
 		return result;
 	}
 	
@@ -162,10 +173,57 @@ public abstract class Critter {
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
 		
 	public static void worldTimeStep() {
-		for (Critter c: population) {
-			c.doTimeStep();
+		for (int k = 0; k < getPopulation().size(); k++){
+			getPopulation().get(k).walk(1);//change walk to doTimestep of Critter "k"
 		}
 	}
 	
-	public static void displayWorld() {}
+	public static void displayWorld() {
+		String[][] out = new String[Params.world_height + 2][Params.world_width + 2];
+		for (int i = 0; i <= Params.world_height + 1;i++){
+			for (int j = 0; j <= Params.world_width + 1;j++){
+			out[i][j] = " ";
+			}
+		}
+
+		out[0][0] = "+";
+		out[Params.world_height + 1][0] = "+";
+		out[0][Params.world_width + 1] = "+";
+		out[Params.world_height + 1][Params.world_width + 1] = "+";
+		for (int i = 1; i <= Params.world_width;i++){
+			out[0][i] = "-";
+			out[Params.world_height + 1][i] = "-";
+		}
+		for (int i = 1; i <= Params.world_height;i++){
+			out[i][0] = "|";
+			out[i][Params.world_width + 1] = "|";
+		}
+		
+		for (int i = 1; i <= Params.world_height;i++){
+			for (int j = 1; j <= Params.world_width;j++){
+				for (int k = 0; k < getPopulation().size(); k++){
+					if (((getPopulation().get(k)).x_coord == j) && ((getPopulation().get(k)).y_coord == i)){ 
+						out[i][j] = getPopulation().get(k).toString();
+						break;
+					}
+				}
+			}
+		}
+		
+		for (int i = 0; i <= Params.world_height + 1;i++){
+			for (int j = 0; j <= Params.world_width + 1;j++){
+				System.out.print(out[i][j]);
+			}
+			System.out.println();
+		}
+
+	}
+
+	public static List<Critter> getPopulation() {
+		return population;
+	}
+
+	public static void setPopulation(List<Critter> population) {
+		Critter.population = population;
+	}
 }

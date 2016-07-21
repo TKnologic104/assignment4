@@ -1,3 +1,4 @@
+
 package project4;
 
 import project4.Critter.TestCritter;
@@ -10,25 +11,6 @@ public class Algae extends TestCritter {
 	
 	public void doTimeStep() {
 		setEnergy(getEnergy() + Params.photosynthesis_energy_amount);
-		//terrible gitlithub implementation
-	}
-	
-		//hello
-	public int addWhatever() {
-		int x = 2;
-		int y = 3;
-		int result = x + y;
-		return result;
-	}
-		
-		//hello
-	public int addWhatever2() {
-		int x = 2;
-		int y = 3;
-		int result = x + y;
-		return result;
-	}
-	public void someOtherThing() {
-		//TODO stuff
 	}
 }
+
