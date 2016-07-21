@@ -48,8 +48,41 @@ public abstract class Critter {
 		return;
 	}
 	protected final void walk(int direction) {
-		this.x_coord = this.x_coord + direction;
-		if (this.x_coord > Params.world_width){
+		switch (direction) {
+		case 0:
+			setX_coord(getX_coord() + 1); // go straight right
+			break;
+		case 1:
+			setX_coord(getX_coord() + 1); // go upper right
+			setY_coord(getY_coord() - 1);
+			break;
+		case 2:
+			setY_coord(getY_coord() - 1); // go straight up
+			break;
+		case 3:
+			setX_coord(getX_coord() - 1); // go upper left
+			setY_coord(getY_coord() - 1);
+			break;
+		case 4:
+			setX_coord(getX_coord() - 1); // go straight left
+			break;
+		case 5:
+			setX_coord(getX_coord() - 1); // go lower left
+			setY_coord(getY_coord() + 1);
+			break;
+		case 6:
+			setY_coord(getY_coord() + 1); // go straight down
+			break;
+		case 7:
+			setX_coord(getX_coord() + 1); // go lower right
+			setY_coord(getY_coord() + 1);
+			break;
+		default:
+			System.out.println("invalid direction");
+			break;
+		}
+		
+		if (x_coord > Params.world_width){
 			this.x_coord = 1;
 		}
 		if (this.x_coord < 1){
@@ -62,11 +95,47 @@ public abstract class Critter {
 		if (this.y_coord < 1){
 			this.y_coord = Params.world_height + 1;
 		}
+		
+		energy -= Params.walk_energy_cost;
 	}
 	
 	protected final void run(int direction) {
+		switch (direction) {
+		case 0:
+			setX_coord(getX_coord() + 2); // go straight right
+			break;
+		case 1:
+			setX_coord(getX_coord() + 2); // go upper right
+			setY_coord(getY_coord() - 2);
+			break;
+		case 2:
+			setY_coord(getY_coord() - 2); // go straight up
+			break;
+		case 3:
+			setX_coord(getX_coord() - 2); // go upper left
+			setY_coord(getY_coord() - 2);
+			break;
+		case 4:
+			setX_coord(getX_coord() - 2); // go straight left
+			break;
+		case 5:
+			setX_coord(getX_coord() - 2); // go lower left
+			setY_coord(getY_coord() + 2);
+			break;
+		case 6:
+			setY_coord(getY_coord() + 2); // go straight down
+			break;
+		case 7:
+			setX_coord(getX_coord() + 2); // go lower right
+			setY_coord(getY_coord() + 2);
+			break;
+		default:
+			System.out.println("invalid direction");
+			break;
+		}
 		
 	}
+
 	
 	protected final void reproduce(Critter offspring, int direction) {
 	}
@@ -194,6 +263,7 @@ public abstract class Critter {
 			out[0][i] = "-";
 			out[Params.world_height + 1][i] = "-";
 		}
+		
 		for (int i = 1; i <= Params.world_height;i++){
 			out[i][0] = "|";
 			out[i][Params.world_width + 1] = "|";
@@ -226,4 +296,21 @@ public abstract class Critter {
 	public static void setPopulation(List<Critter> population) {
 		Critter.population = population;
 	}
+	
+	public int getX_coord() {
+		return x_coord;
+	}
+
+	public void setX_coord(int x_coord) {
+		this.x_coord = x_coord;
+	}
+
+	public int getY_coord() {
+		return y_coord;
+	}
+
+	public void setY_coord(int y_coord) {
+		this.y_coord = y_coord;
+	}
+
 }
