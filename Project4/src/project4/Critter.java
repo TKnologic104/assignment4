@@ -14,6 +14,8 @@ package project4;
 
 import java.util.List;
 
+import javax.swing.text.html.HTMLDocument.Iterator;
+
 /* see the PDF for descriptions of the methods and fields in this class
  * you may add fields, methods or inner classes to Critter ONLY if you make your additions private
  * no new public, protected or default-package code or data can be added to Critter
@@ -34,6 +36,9 @@ public abstract class Critter {
 	
 	private int energy = 0;
 	protected int getEnergy() { return energy; }
+	
+	/* added */
+	private void setEnergy(int energy) { this.energy = energy; }
 	
 	private int x_coord;
 	private int y_coord;
@@ -360,11 +365,20 @@ public abstract class Critter {
 		}
 		
 		/* remove dead critters from population */
+		java.util.Iterator<Critter> itr = population.iterator();
+		while(itr.hasNext()){
+			Critter c = itr.next();
+			if (c.getEnergy() <= 0) {
+				itr.remove();
+			}
+		}
+		/*
 		for (Critter c: population) {
 			if (c.getEnergy() <= 0) {
 				population.remove(c);
 			}
 		}
+		*/
 		
 		/* add babies to population */
 		for (Critter c: babies) {
