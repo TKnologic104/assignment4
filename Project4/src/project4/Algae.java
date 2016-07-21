@@ -11,17 +11,4 @@ public class Algae extends TestCritter {
 	public void doTimeStep() {
 		setEnergy(getEnergy() + Params.photosynthesis_energy_amount);
 	}
-		
-		
-		
-		
-		
-		
-		//hello
-	public int addWhatever() {
-		int x = 2;
-		int y = 3;
-		int result = x + y;
-		return result;
-	}
 }
