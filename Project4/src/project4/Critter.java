@@ -162,6 +162,45 @@ public abstract class Critter {
 
 	
 	protected final void reproduce(Critter offspring, int direction) {
+
+		/* check if parent can have offspring */
+		if (this.getEnergy() < Params.min_reproduce_energy) {
+			return;
+		}
+		/* update energy of parent and offspring */
+		offspring.setEnergy(this.getEnergy() / 2);
+		this.setEnergy((int)Math.ceil(this.getEnergy() / 2.0));
+		/* place baby in adjacent space to parent */
+		//TODO add support for wrap around world
+		offspring.x_coord = this.x_coord;
+		offspring.y_coord = this.y_coord;
+		offspring.walk(direction);
+		offspring.energy += Params.walk_energy_cost; //refunds the energy after the walk.
+		/* stage babies */
+		babies.add(offspring);
+	
+	}
+	
+	private static void resolveEncounter(Critter a, Critter b) {
+		if (a.getEnergy() <= 0 || b.getEnergy() <= 0) {
+			return;
+		}
+		
+		int a_AttackRoll = 0;
+		int b_AttackRoll = 0;
+		if (a.fight(b.toString())) {
+			a_AttackRoll = Critter.getRandomInt(a.getEnergy());
+		}
+		if (b.fight(a.toString())) {
+			b_AttackRoll = Critter.getRandomInt(b.getEnergy());
+		}
+		if (a_AttackRoll >= b_AttackRoll) {
+			a.setEnergy(b.getEnergy() / 2);
+			b.setEnergy(0);
+		} else {
+			b.setEnergy(a.getEnergy() / 2);
+			a.setEnergy(0);
+		}
 	}
 
 	public abstract void doTimeStep();
@@ -286,11 +325,53 @@ public abstract class Critter {
 	 * runs "doTimeStep" of each critter "k" in the population. 
 	 */
 	public static void worldTimeStep() {
+		/*
 		for (int k = 0; k < getPopulation().size(); k++){
 			getPopulation().get(k).doTimeStep();
 			//getPopulation().get(k).run(4);
 		}
+		*/
+
+		/* move and reproduce (but don't add babies to population) */
+		for (Critter c: population) {
+			c.doTimeStep();
+		}
+		
+		/* resolve encounters*/
+		for (Critter a: population) {
+			for (Critter b: population) {
+				if (a.x_coord == b.x_coord && a.y_coord == b.y_coord) {
+					resolveEncounter(a,b);
+				}
+			}
+		}
+		
+		/* update rest energy */
+		for (Critter c: population) {
+			c.setEnergy(c.getEnergy() - Params.rest_energy_cost);
+		}
+		
+		/* add algae */
+		for (int i = 0; i < Params.refresh_algae_count; i += 1) {
+			Algae a = new Algae();
+			a.setXCoord(Critter.getRandomInt(Params.world_width-1)+1); //fixed for border
+			a.setYCoord(Critter.getRandomInt(Params.world_height-1)+1); //fixed for border
+			population.add(a);
+		}
+		
+		/* remove dead critters from population */
+		for (Critter c: population) {
+			if (c.getEnergy() <= 0) {
+				population.remove(c);
+			}
+		}
+		
+		/* add babies to population */
+		for (Critter c: babies) {
+			population.add(c);
+		}
 	}
+
 	
 	public static void displayWorld() {
 		//fills whole grid with " ".
