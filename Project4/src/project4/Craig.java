@@ -14,10 +14,8 @@ public class Craig extends Critter {
 			genes[k] = GENE_TOTAL / 8;
 		}
 		dir = Critter.getRandomInt(8);
-		this.setx(Critter.getRandomInt(16));
-		this.sety(Critter.getRandomInt(8));
-		this.setx(4);
-		this.sety(4);
+		this.setx(Critter.getRandomInt(Params.world_width-1)+1); //I added these
+		this.sety(Critter.getRandomInt(Params.world_height-1)+1); //I added these
 	}
 	
 	public boolean fight(String not_used) { return true; }

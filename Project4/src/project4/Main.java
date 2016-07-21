@@ -11,6 +11,10 @@
  * Summer 2016
  */
 package project4;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -26,14 +30,26 @@ public class Main {
 			System.out.print("Critters>");
 			input = in.nextLine();
 			tokens = input.split(delim);
-			switch (tokens[0].toUpperCase()){
-			case "QUIT":
+			switch (tokens[0]){
+			case "quit":
+				if (tokens.length > 1){
+					System.out.println("Invalid Command");
+					break;
+				}
 				input = tokens[0];
 				break;
-			case "SHOW":
+			case "show":
+				if (tokens.length > 1){
+					System.out.println("Invalid Command");
+					break;
+				}
 				Critter.displayWorld();
 				break;
-			case "STEP":
+			case "step":
+				if (tokens.length > 2){
+					System.out.println("Invalid Command");
+					break;
+				}
 				i = 1;
 				if (tokens.length > 1){
 					i = getNumber(tokens[1]);
@@ -42,7 +58,11 @@ public class Main {
 					Critter.worldTimeStep();
 				}
 				break;
-			case "SEED":
+			case "seed":
+				if (tokens.length > 2){
+					System.out.println("Invalid Command");
+					break;
+				}
 				i = 1;
 				if (tokens.length > 1){
 					i = getNumber(tokens[1]);
@@ -50,11 +70,15 @@ public class Main {
 				i = getNumber(tokens[1]);
 				Critter.setSeed(i);
 				break;
-			case "MAKE":
+			case "make":
 //				Critter.makeCritter("project4.Craig");
 //				Critter.makeCritter("project4.Jitter");
 //				Critter.makeCritter("project4.Bitter");
 //				break;
+				if (tokens.length > 3){
+					System.out.println("Invalid Command");
+					break;
+				}
 				i = 1;
 				if (tokens.length > 2){
 					i = getNumber(tokens[2]);
@@ -62,23 +86,60 @@ public class Main {
 				for (int j = 1 ; j <= i; j++){
 					Critter.makeCritter(tokens[1]);
 				}
-			case "STATS":
+				break;
+			case "stats":
+				if (tokens.length > 2){
+					System.out.println("Invalid Command");
+					break;
+				}
 				if (!(tokens.length == 2)){
 					System.out.println("Invalid Command - stats");
 					break;
 				}
-				Critter.getInstances(tokens[1]);
+				List<Critter> statList = new ArrayList<Critter>();
+				statList = Critter.getInstances(tokens[1]);
+				if (statList.size() <= 0){
+					System.out.println("No instances found");
+					break;
+				}
+				if (statList.equals(Critter.getPopulation())){
+					Critter.runStats(statList);
+					break;
+				}
+				//Critter.runStats(statList);
+				Object ob = null;
+				Method m1 = null; // super class to all methods of any particular class
+				Class<?> cls = Class.forName(tokens[1]);
+				ob = cls.newInstance();
+				try {
+					m1 = ob.getClass().getMethod("runStats", List.class);
+				} catch (NoSuchMethodException | SecurityException e) {
+					System.out.println("No Such Method");
+					return;
+					//e.printStackTrace();
+				}
+				try {
+					m1.invoke(ob, statList);
+				} catch (IllegalArgumentException | InvocationTargetException e) {
+					System.out.println("Illegal Argument Exception");
+					return;
+					//e.printStackTrace();
+				}
 				break;
 			default:
-				if (!(input.equals("START"))){
+				//if (!(input.equals("START"))){
 					System.out.println("Invalid command");
-			}
+			//}
 				 break;
 			}
 		}
 		System.out.println("Bye");
 	}
 	
+	/** converts string into an integer value, and also prints Invalid command if its not a valid integer.
+	 * @param str
+	 * @return
+	 */
 	public static int getNumber(String str){
 		int i = 0;
 		if (str == null || str == "" || str == " "){
