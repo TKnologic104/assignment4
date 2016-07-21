@@ -70,12 +70,50 @@ public abstract class Critter {
 	}
 	
 	protected final void reproduce(Critter offspring, int direction) {
+		/* check if parent can have offspring */
 		if (this.getEnergy() < Params.min_reproduce_energy) {
 			return;
 		}
+		/* update energy of parent and offspring */
 		offspring.setEnergy(this.getEnergy() / 2);
 		this.setEnergy((int)Math.ceil(this.getEnergy() / 2.0));
-		
+		/* place baby in adjacent space to parent */
+		//TODO add support for wrap around world
+		switch (direction) {
+		case 0:
+			setX_coord(getX_coord() + 1); // go straight right
+			break;
+		case 1:
+			setX_coord(getX_coord() + 1); // go upper right
+			setY_coord(getY_coord() - 1);
+			break;
+		case 2:
+			setY_coord(getY_coord() - 1); // go straight up
+			break;
+		case 3:
+			setX_coord(getX_coord() - 1); // go upper left
+			setY_coord(getY_coord() - 1);
+			break;
+		case 4:
+			setX_coord(getX_coord() - 1); // go straight left
+			break;
+		case 5:
+			setX_coord(getX_coord() - 1); // go lower left
+			setY_coord(getY_coord() + 1);
+			break;
+		case 6:
+			setY_coord(getY_coord() + 1); // go straight down
+			break;
+		case 7:
+			setX_coord(getX_coord() + 1); // go lower right
+			setY_coord(getY_coord() + 1);
+			break;
+		default:
+			System.out.println("invalid direction");
+			break;
+		}
+		/* stage babies */
+		babies.add(offspring);
 	}
 
 	public abstract void doTimeStep();
