@@ -115,6 +115,21 @@ public abstract class Critter {
 		/* stage babies */
 		babies.add(offspring);
 	}
+	
+	protected final static void resolveEncounter(Critter a, Critter b) {
+		int a_AttackRoll = 0;
+		int b_AttackRoll = 0;
+		if (a.fight(b.toString())) {
+			a_AttackRoll = Critter.getRandomInt(a.getEnergy());
+		}
+		if (b.fight(a.toString())) {
+			b_AttackRoll = Critter.getRandomInt(b.getEnergy());
+		}
+		if (a_AttackRoll >= b_AttackRoll) {
+			a.setEnergy(b.getEnergy() / 2);
+			b.setEnergy(0);
+		}
+	}
 
 	public abstract void doTimeStep();
 	public abstract boolean fight(String oponent);
@@ -218,8 +233,35 @@ public abstract class Critter {
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
 		
 	public static void worldTimeStep() {
-		for (int k = 0; k < getPopulation().size(); k++){
-			getPopulation().get(k).walk(1);//change walk to doTimestep of Critter "k"
+		/* move and reproduce (but don't add babies to population) */
+		for (Critter c: population) {
+			c.doTimeStep();
+		}
+		/* resolve encounters*/
+		for (Critter a: population) {
+			for (Critter b: population) {
+				if (a.getX_coord() == b.getX_coord() && a.getY_coord() == b.getY_coord()) {
+					resolveEncounter(a,b);
+				}
+			}
+		}
+		/* update rest energy */
+		for (Critter c: population) {
+			c.setEnergy(c.getEnergy() - Params.rest_energy_cost);
+		}
+		
+		//TODO add algae
+		
+		/* remove dead critters from population */
+		for (Critter c: population) {
+			if (c.getEnergy() <= 0) {
+				population.remove(c);
+			}
+		}
+		
+		/* add babies to population */
+		for (Critter c: babies) {
+			population.add(c);
 		}
 	}
 	
