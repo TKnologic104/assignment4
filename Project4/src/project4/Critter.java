@@ -12,7 +12,6 @@
  */
 package project4;
 
-import java.util.Arrays;
 import java.util.List;
 
 /* see the PDF for descriptions of the methods and fields in this class
@@ -79,9 +78,24 @@ public abstract class Critter {
 	 * critter_class_name must be the name of a concrete subclass of Critter, if not
 	 * an InvalidCritterException must be thrown
 	 */
-	public static void makeCritter(String critter_class_name) throws InvalidCritterException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-		Class cls = Class.forName(critter_class_name);
-		Object ob = cls.newInstance(); 
+	public static void makeCritter(String critter_class_name) throws InvalidCritterException{
+		Class<?> cls = null;
+		try {
+			cls = Class.forName(critter_class_name);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("Error while creating class");
+		}
+		Object ob = null;
+		try {
+			ob = cls.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("Error while creating class");
+
+		} 
 		population.add((Critter) ob);
 	}
 	
@@ -160,7 +174,7 @@ public abstract class Critter {
 		
 	public static void worldTimeStep() {
 		for (int k = 0; k < getPopulation().size(); k++){
-			getPopulation().get(k).walk(1);
+			getPopulation().get(k).walk(1);//change walk to doTimestep of Critter "k"
 		}
 	}
 	
