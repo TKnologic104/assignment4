@@ -35,28 +35,23 @@ public abstract class Critter {
 	
 	private int energy = 0;
 	protected int getEnergy() { return energy; }
-	protected void setEnergy(int energy) { this.energy = energy; }
+	
+	/* added */
+	private void setEnergy(int energy) { this.energy = energy; }
 	
 	private int x_coord;
 	private int y_coord;
-	
-	public final void setx(int x){
+		
+	/* will need to be removed */
+	public void setx(int x) {
 		this.x_coord = x;
 		return;
 	}
-	
-	protected final void sety(int y){
+	public void sety(int y) {
 		this.y_coord = y;
 		return;
 	}
-
-	public int getX_coord() {
-		return x_coord;
-	}
-
-	public int getY_coord() {
-		return y_coord;
-	}
+	/* end of code to be removed */
 
 	protected final void walk(int direction) {
 		this.x_coord = this.x_coord + direction;
@@ -89,34 +84,36 @@ public abstract class Critter {
 		this.setEnergy((int)Math.ceil(this.getEnergy() / 2.0));
 		/* place baby in adjacent space to parent */
 		//TODO add support for wrap around world
+		offspring.x_coord = this.x_coord;
+		offspring.y_coord = this.y_coord;
 		switch (direction) {
 		case 0:
-			setx(getX_coord() + 1); // go straight right
+			offspring.x_coord += 1;	// go straight right
 			break;
 		case 1:
-			setx(getX_coord() + 1); // go upper right
-			sety(getY_coord() - 1);
+			offspring.x_coord += 1;	// go upper right
+			offspring.y_coord -= 1;	
 			break;
 		case 2:
-			sety(getY_coord() - 1); // go straight up
+			offspring.y_coord -= 1; 	// go straight up
 			break;
 		case 3:
-			setx(getX_coord() - 1); // go upper left
-			sety(getY_coord() - 1);
+			offspring.x_coord -= 1;	// go upper left
+			offspring.y_coord -= 1;
 			break;
 		case 4:
-			setx(getX_coord() - 1); // go straight left
+			offspring.x_coord -= 1;	// go straight left
 			break;
 		case 5:
-			setx(getX_coord() - 1); // go lower left
-			sety(getY_coord() + 1);
+			offspring.x_coord -= 1;	// go lower left
+			offspring.y_coord += 1;
 			break;
 		case 6:
-			sety(getY_coord() + 1); // go straight down
+			offspring.y_coord += 1;	// go straight down
 			break;
 		case 7:
-			setx(getX_coord() + 1); // go lower right
-			sety(getY_coord() + 1);
+			offspring.x_coord += 1;	// go lower right
+			offspring.y_coord += 1;
 			break;
 		default:
 			System.out.println("invalid direction");
@@ -126,7 +123,11 @@ public abstract class Critter {
 		babies.add(offspring);
 	}
 	
-	protected final static void resolveEncounter(Critter a, Critter b) {
+	private static void resolveEncounter(Critter a, Critter b) {
+		if (a.getEnergy() <= 0 || b.getEnergy() <= 0) {
+			return;
+		}
+		
 		int a_AttackRoll = 0;
 		int b_AttackRoll = 0;
 		if (a.fight(b.toString())) {
@@ -138,6 +139,9 @@ public abstract class Critter {
 		if (a_AttackRoll >= b_AttackRoll) {
 			a.setEnergy(b.getEnergy() / 2);
 			b.setEnergy(0);
+		} else {
+			b.setEnergy(a.getEnergy() / 2);
+			a.setEnergy(0);
 		}
 	}
 
@@ -251,7 +255,7 @@ public abstract class Critter {
 		/* resolve encounters*/
 		for (Critter a: population) {
 			for (Critter b: population) {
-				if (a.getX_coord() == b.getX_coord() && a.getY_coord() == b.getY_coord()) {
+				if (a.x_coord == b.x_coord && a.y_coord == b.y_coord) {
 					resolveEncounter(a,b);
 				}
 			}
@@ -265,8 +269,8 @@ public abstract class Critter {
 		/* add algae */
 		for (int i = 0; i < Params.refresh_algae_count; i += 1) {
 			Algae a = new Algae();
-			a.setx(Critter.getRandomInt(Params.world_width));
-			a.sety(Critter.getRandomInt(Params.world_height));
+			a.setXCoord(Critter.getRandomInt(Params.world_width));
+			a.setYCoord(Critter.getRandomInt(Params.world_height));
 			population.add(a);
 		}
 		
@@ -324,11 +328,11 @@ public abstract class Critter {
 
 	}
 
-	public static List<Critter> getPopulation() {
+	private static List<Critter> getPopulation() {
 		return population;
 	}
 
-	public static void setPopulation(List<Critter> population) {
+	private static void setPopulation(List<Critter> population) {
 		Critter.population = population;
 	}
 	
