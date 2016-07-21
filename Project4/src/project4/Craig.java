@@ -14,8 +14,6 @@ public class Craig extends Critter {
 			genes[k] = GENE_TOTAL / 8;
 		}
 		dir = Critter.getRandomInt(8);
-		this.setx(Critter.getRandomInt(Params.world_width-1)+1); //I added these
-		this.sety(Critter.getRandomInt(Params.world_height-1)+1); //I added these
 	}
 	
 	public boolean fight(String not_used) { return true; }
@@ -25,7 +23,7 @@ public class Craig extends Critter {
 		/* take one step forward */
 		walk(dir);
 		
-		if (getEnergy() > 150) {
+		if (getEnergy() > 75) { 
 			Craig child = new Craig();
 			for (int k = 0; k < 8; k += 1) {
 				child.genes[k] = this.genes[k];

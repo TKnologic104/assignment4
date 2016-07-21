@@ -162,7 +162,7 @@ public abstract class Critter {
 		if (y_coord < 0){
 			y_coord = Params.world_height+1;
 		}
-		energy -= Params.walk_energy_cost;
+		energy -= Params.run_energy_cost;
 	}
 
 	
@@ -235,7 +235,11 @@ public abstract class Critter {
 			return;
 
 		} 
-		population.add((Critter) ob);
+		Critter c = (Critter) ob;
+		c.x_coord = Critter.getRandomInt(Params.world_width-1)+1;
+		c.y_coord = Critter.getRandomInt(Params.world_height-1)+1;
+		c.energy = Params.start_energy;
+		population.add(c);
 	}
 	
 	/** gets the list of all the subclasses as specified in the argument
@@ -342,10 +346,10 @@ public abstract class Critter {
 			c.doTimeStep();
 		}
 		
-		/* resolve encounters*/
+		/* resolve encounters*/				
 		for (Critter a: population) {
 			for (Critter b: population) {
-				if (a.x_coord == b.x_coord && a.y_coord == b.y_coord) {
+				if (a != b && a.x_coord == b.x_coord && a.y_coord == b.y_coord) {
 					resolveEncounter(a,b);
 				}
 			}
@@ -359,6 +363,7 @@ public abstract class Critter {
 		/* add algae */
 		for (int i = 0; i < Params.refresh_algae_count; i += 1) {
 			Algae a = new Algae();
+			a.setEnergy(Params.start_energy);
 			a.setXCoord(Critter.getRandomInt(Params.world_width-1)+1); //fixed for border
 			a.setYCoord(Critter.getRandomInt(Params.world_height-1)+1); //fixed for border
 			population.add(a);
