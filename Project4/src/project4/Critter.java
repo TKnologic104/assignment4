@@ -48,6 +48,15 @@ public abstract class Critter {
 		this.y_coord = y;
 		return;
 	}
+
+	public int getX_coord() {
+		return x_coord;
+	}
+
+	public int getY_coord() {
+		return y_coord;
+	}
+
 	protected final void walk(int direction) {
 		this.x_coord = this.x_coord + direction;
 		if (this.x_coord > Params.world_width){
@@ -81,32 +90,32 @@ public abstract class Critter {
 		//TODO add support for wrap around world
 		switch (direction) {
 		case 0:
-			setX_coord(getX_coord() + 1); // go straight right
+			setx(getX_coord() + 1); // go straight right
 			break;
 		case 1:
-			setX_coord(getX_coord() + 1); // go upper right
-			setY_coord(getY_coord() - 1);
+			setx(getX_coord() + 1); // go upper right
+			sety(getY_coord() - 1);
 			break;
 		case 2:
-			setY_coord(getY_coord() - 1); // go straight up
+			sety(getY_coord() - 1); // go straight up
 			break;
 		case 3:
-			setX_coord(getX_coord() - 1); // go upper left
-			setY_coord(getY_coord() - 1);
+			setx(getX_coord() - 1); // go upper left
+			sety(getY_coord() - 1);
 			break;
 		case 4:
-			setX_coord(getX_coord() - 1); // go straight left
+			setx(getX_coord() - 1); // go straight left
 			break;
 		case 5:
-			setX_coord(getX_coord() - 1); // go lower left
-			setY_coord(getY_coord() + 1);
+			setx(getX_coord() - 1); // go lower left
+			sety(getY_coord() + 1);
 			break;
 		case 6:
-			setY_coord(getY_coord() + 1); // go straight down
+			sety(getY_coord() + 1); // go straight down
 			break;
 		case 7:
-			setX_coord(getX_coord() + 1); // go lower right
-			setY_coord(getY_coord() + 1);
+			setx(getX_coord() + 1); // go lower right
+			sety(getY_coord() + 1);
 			break;
 		default:
 			System.out.println("invalid direction");
@@ -237,6 +246,7 @@ public abstract class Critter {
 		for (Critter c: population) {
 			c.doTimeStep();
 		}
+		
 		/* resolve encounters*/
 		for (Critter a: population) {
 			for (Critter b: population) {
@@ -245,12 +255,19 @@ public abstract class Critter {
 				}
 			}
 		}
+		
 		/* update rest energy */
 		for (Critter c: population) {
 			c.setEnergy(c.getEnergy() - Params.rest_energy_cost);
 		}
 		
-		//TODO add algae
+		/* add algae */
+		for (int i = 0; i < Params.refresh_algae_count; i += 1) {
+			Algae a = new Algae();
+			a.setx(Critter.getRandomInt(Params.world_width));
+			a.sety(Critter.getRandomInt(Params.world_height));
+			population.add(a);
+		}
 		
 		/* remove dead critters from population */
 		for (Critter c: population) {
@@ -313,19 +330,5 @@ public abstract class Critter {
 	public static void setPopulation(List<Critter> population) {
 		Critter.population = population;
 	}
-	public int getX_coord() {
-		return x_coord;
-	}
-
-	public void setX_coord(int x_coord) {
-		this.x_coord = x_coord;
-	}
-
-	public int getY_coord() {
-		return y_coord;
-	}
-
-	public void setY_coord(int y_coord) {
-		this.y_coord = y_coord;
-	}
+	
 }

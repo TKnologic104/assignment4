@@ -14,8 +14,8 @@ public class Craig extends Critter {
 			genes[k] = GENE_TOTAL / 8;
 		}
 		dir = Critter.getRandomInt(8);
-		this.setx(Critter.getRandomInt(16));
-		this.sety(Critter.getRandomInt(8));
+		this.setx(Critter.getRandomInt(Params.world_width));
+		this.sety(Critter.getRandomInt(Params.world_height));
 		this.setx(4);
 		this.sety(4);
 	}
