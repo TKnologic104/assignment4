@@ -269,8 +269,8 @@ public abstract class Critter {
 		/* add algae */
 		for (int i = 0; i < Params.refresh_algae_count; i += 1) {
 			Algae a = new Algae();
-			a.setXCoord(Critter.getRandomInt(Params.world_width));
-			a.setYCoord(Critter.getRandomInt(Params.world_height));
+			a.setXCoord(Critter.getRandomInt(Params.world_width-1)+1); //fixed for border
+			a.setYCoord(Critter.getRandomInt(Params.world_height-1)+1); //fixed for border
 			population.add(a);
 		}
 		
