@@ -1,4 +1,3 @@
-
 package project4;
 
 import project4.Critter.TestCritter;
