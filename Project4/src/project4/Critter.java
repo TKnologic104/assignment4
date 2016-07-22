@@ -42,6 +42,7 @@ public abstract class Critter {
 	
 	private int x_coord;
 	private int y_coord;
+	private boolean hasMoved;
 	
 	public final void setx(int x){
 		this.x_coord = x;
@@ -53,6 +54,10 @@ public abstract class Critter {
 		return;
 	}
 	protected final void walk(int direction) {
+		if (hasMoved = true) {
+			energy -= Params.walk_energy_cost;
+			return;
+		}
 		switch (direction) {
 		case 0:
 			setX_coord(getX_coord() + 1); // go straight right
@@ -105,6 +110,10 @@ public abstract class Critter {
 	}
 	
 	protected final void run(int direction) {
+		if (hasMoved = true) {
+			energy -= Params.run_energy_cost;
+			return;
+		}
 		switch (direction) {
 		case 0:
 			setX_coord(getX_coord() + 2); // go straight right
@@ -334,15 +343,9 @@ public abstract class Critter {
 	 * runs "doTimeStep" of each critter "k" in the population. 
 	 */
 	public static void worldTimeStep() {
-		/*
-		for (int k = 0; k < getPopulation().size(); k++){
-			getPopulation().get(k).doTimeStep();
-			//getPopulation().get(k).run(4);
-		}
-		*/
-
 		/* move and reproduce (but don't add babies to population) */
 		for (Critter c: population) {
+			c.hasMoved = false;
 			c.doTimeStep();
 		}
 		

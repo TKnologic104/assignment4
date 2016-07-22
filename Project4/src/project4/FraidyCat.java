@@ -24,11 +24,9 @@ public class FraidyCat extends Critter{
 	@Override
 	public void doTimeStep() {
 		/* take one step forward */
-		hasWalked = false;
 		boolean myRandomBoolean = (Critter.getRandomInt(1) == 1);
 		if (myRandomBoolean) {
 			walk(dir);
-			hasWalked = true;
 		}
 		
 		if (getEnergy() > Params.min_reproduce_energy) {
