@@ -43,105 +43,106 @@ public abstract class Critter {
 	private int x_coord;
 	private int y_coord;
 	private boolean hasMoved;
+	private boolean inFight;
 	
-	public final void setx(int x){
-		this.x_coord = x;
-		return;
-	}
-	
-	protected final void sety(int y){
-		this.y_coord = y;
-		return;
-	}
 	protected final void walk(int direction) {
-		if (hasMoved = true) {
+		if (hasMoved == true) {
 			energy -= Params.walk_energy_cost;
 			return;
 		}
-		switch (direction) {
-		case 0:
-			setX_coord(getX_coord() + 1); // go straight right
-			break;
-		case 1:
-			setX_coord(getX_coord() + 1); // go upper right
-			setY_coord(getY_coord() - 1);
-			break;
-		case 2:
-			setY_coord(getY_coord() - 1); // go straight up
-			break;
-		case 3:
-			setX_coord(getX_coord() - 1); // go upper left
-			setY_coord(getY_coord() - 1);
-			break;
-		case 4:
-			setX_coord(getX_coord() - 1); // go straight left
-			break;
-		case 5:
-			setX_coord(getX_coord() - 1); // go lower left
-			setY_coord(getY_coord() + 1);
-			break;
-		case 6:
-			setY_coord(getY_coord() + 1); // go straight down
-			break;
-		case 7:
-			setX_coord(getX_coord() + 1); // go lower right
-			setY_coord(getY_coord() + 1);
-			break;
-		default:
-			System.out.println("invalid direction");
-			break;
-		}
-		
-		if (x_coord == Params.world_width+1){
-			x_coord = x_coord - Params.world_width;
-		}
-		if (x_coord == 0){
-			x_coord = Params.world_width;
-		}
-		
-		if (y_coord == Params.world_height+1){
-			y_coord = y_coord - Params.world_height;
-		}
-		if (y_coord == 0){
-			y_coord = Params.world_height;
-		}
-		
-		energy -= Params.walk_energy_cost;
+		move(direction, 1, Params.walk_energy_cost);
 	}
 	
 	protected final void run(int direction) {
-		if (hasMoved = true) {
+		if (hasMoved == true) {
 			energy -= Params.run_energy_cost;
 			return;
 		}
+		move(direction, 2, Params.run_energy_cost);
+	}
+
+	
+	private void move(int direction, int speed, int cost) {
+		this.energy -= cost;
+		if (this.energy <= 0) {
+			return;
+		}
+		int peekX = -1;
+		int peekY = -1;
+		if (this.inFight) {
+			switch (direction) {
+			case 0:
+				peekX = this.x_coord + speed;	// look straight right
+				peekY = this.y_coord;
+				break;
+			case 1:
+				peekX = this.x_coord + speed;	// look upper right
+				peekY = this.y_coord - speed;	
+				break;
+			case 2:
+				peekX = this.x_coord;
+				peekY = this.y_coord - speed; 	// look straight up
+				break;
+			case 3:
+				peekX = this.x_coord - speed;	// look upper left
+				peekY = this.y_coord - speed;
+				break;
+			case 4:
+				peekX = this.x_coord - speed;	// look straight left
+				peekY = this.y_coord;
+				break;
+			case 5:
+				peekX = this.x_coord - speed;	// look lower left
+				peekY = this.y_coord + speed;
+				break;
+			case 6:
+				peekX = this.x_coord;
+				peekY = this.y_coord + speed;	// look straight down
+				break;
+			case 7:
+				peekX = this.x_coord + speed;	// look lower right
+				peekY = this.y_coord + speed;
+				break;
+			default:
+				System.out.println("invalid direction");
+				break;
+			}	
+			
+			for(Critter c: population) {
+				if (this != c && c.x_coord == peekX && c.y_coord == peekY) {
+					return;
+				}
+			}
+		}
+		
 		switch (direction) {
 		case 0:
-			setX_coord(getX_coord() + 2); // go straight right
+			this.x_coord += speed;	// go straight right
 			break;
 		case 1:
-			setX_coord(getX_coord() + 2); // go upper right
-			setY_coord(getY_coord() - 2);
+			this.x_coord += speed;	// go upper right
+			this.y_coord -= speed;	
 			break;
 		case 2:
-			setY_coord(getY_coord() - 2); // go straight up
+			this.y_coord -= speed; 	// go straight up
 			break;
 		case 3:
-			setX_coord(getX_coord() - 2); // go upper left
-			setY_coord(getY_coord() - 2);
+			this.x_coord -= speed;	// go upper left
+			this.y_coord -= speed;
 			break;
 		case 4:
-			setX_coord(getX_coord() - 2); // go straight left
+			this.x_coord -= speed;	// go straight left
 			break;
 		case 5:
-			setX_coord(getX_coord() - 2); // go lower left
-			setY_coord(getY_coord() + 2);
+			this.x_coord -= speed;	// go lower left
+			this.y_coord += speed;
 			break;
 		case 6:
-			setY_coord(getY_coord() + 2); // go straight down
+			this.y_coord += speed;	// go straight down
 			break;
 		case 7:
-			setX_coord(getX_coord() + 2); // go lower right
-			setY_coord(getY_coord() + 2);
+			this.x_coord += speed;	// go lower right
+			this.y_coord += speed;
 			break;
 		default:
 			System.out.println("invalid direction");
@@ -171,9 +172,7 @@ public abstract class Critter {
 		if (y_coord < 0){
 			y_coord = Params.world_height+1;
 		}
-		energy -= Params.run_energy_cost;
 	}
-
 	
 	protected final void reproduce(Critter offspring, int direction) {
 
@@ -185,11 +184,9 @@ public abstract class Critter {
 		offspring.setEnergy(this.getEnergy() / 2);
 		this.setEnergy((int)Math.ceil(this.getEnergy() / 2.0));
 		/* place baby in adjacent space to parent */
-		//TODO add support for wrap around world
 		offspring.x_coord = this.x_coord;
 		offspring.y_coord = this.y_coord;
-		offspring.walk(direction);
-		offspring.energy += Params.walk_energy_cost; //refunds the energy after the walk.
+		offspring.move(direction, 1, 0);
 		/* stage babies */
 		babies.add(offspring);
 	
@@ -200,21 +197,27 @@ public abstract class Critter {
 			return;
 		}
 		
+		a.inFight = true;
+		b.inFight = true;
 		int a_AttackRoll = 0;
 		int b_AttackRoll = 0;
+		
 		if (a.fight(b.toString())) {
 			a_AttackRoll = Critter.getRandomInt(a.getEnergy());
 		}
 		if (b.fight(a.toString())) {
 			b_AttackRoll = Critter.getRandomInt(b.getEnergy());
 		}
-		if (a_AttackRoll >= b_AttackRoll) {
-			a.setEnergy(b.getEnergy() / 2);
-			b.setEnergy(0);
-		} else {
-			b.setEnergy(a.getEnergy() / 2);
-			a.setEnergy(0);
-		}
+		if (a.x_coord == b.x_coord && a.y_coord == b.y_coord) {
+			if (a_AttackRoll >= b_AttackRoll) {
+				a.setEnergy(b.getEnergy() / 2);
+				b.setEnergy(0);
+			} else {
+				b.setEnergy(a.getEnergy() / 2);
+				a.setEnergy(0);
+			}
+		} 
+		return;
 	}
 
 	public abstract void doTimeStep();
@@ -229,7 +232,6 @@ public abstract class Critter {
 		try {
 			cls = Class.forName(critter_class_name);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			//e.printStackTrace();
 			System.out.println("Error while creating class");
 			return;
@@ -238,7 +240,6 @@ public abstract class Critter {
 		try {
 			ob = cls.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			//e.printStackTrace();
 			System.out.println("Error while creating class");
 			return;
@@ -261,7 +262,6 @@ public abstract class Critter {
 		String[] tokens = new String[2];
 		tokens = critter_class_name.split(delim);
 		
-///*************************************************************************		
 		if (!critter_class_name.contains(".")){
 			System.out.println("Invalid Command: stats " + critter_class_name);
 			return null;
@@ -289,10 +289,7 @@ public abstract class Critter {
 			System.out.println("Invalid Command: stats " + critter_class_name);
 			return null;
 			//e.printStackTrace();
-		}
-		
-///*************************************************************************
-		
+		}		
 		for (int k = 0; k < getPopulation().size(); k++){
 			if ((getPopulation().get(k)).getClass().isInstance(ob)){
 				result.add(getPopulation().get(k));
@@ -345,11 +342,14 @@ public abstract class Critter {
 		protected void setYCoord(int new_y_coord) {
 			super.y_coord = new_y_coord;
 		}
+		
+        public static List<Critter> getPopulation() {
+            return Critter.getPopulation();
+        }
 	}
 	
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
-	private static List<Critter> babies = new java.util.ArrayList<Critter>();
-		
+	private static List<Critter> babies = new java.util.ArrayList<Critter>();	
 	
 	/**
 	 * runs "doTimeStep" of each critter "k" in the population. 
@@ -357,10 +357,10 @@ public abstract class Critter {
 	public static void worldTimeStep() {
 		/* move and reproduce (but don't add babies to population) */
 		for (Critter c: population) {
+			c.inFight = false;
 			c.hasMoved = false;
 			c.doTimeStep();
 		}
-		
 		/* resolve encounters*/				
 		for (Critter a: population) {
 			for (Critter b: population) {
@@ -369,12 +369,10 @@ public abstract class Critter {
 				}
 			}
 		}
-		
 		/* update rest energy */
 		for (Critter c: population) {
 			c.setEnergy(c.getEnergy() - Params.rest_energy_cost);
 		}
-		
 		/* add algae */
 		for (int i = 0; i < Params.refresh_algae_count; i += 1) {
 			Algae a = new Algae();
@@ -383,7 +381,6 @@ public abstract class Critter {
 			a.setYCoord(Critter.getRandomInt(Params.world_height-1)+1); //fixed for border
 			population.add(a);
 		}
-		
 		/* remove dead critters from population */
 		java.util.Iterator<Critter> itr = population.iterator();
 		while(itr.hasNext()){
@@ -391,15 +388,7 @@ public abstract class Critter {
 			if (c.getEnergy() <= 0) {
 				itr.remove();
 			}
-		}
-		/*
-		for (Critter c: population) {
-			if (c.getEnergy() <= 0) {
-				population.remove(c);
-			}
-		}
-		*/
-		
+		}	
 		/* add babies to population */
 		for (Critter c: babies) {
 			population.add(c);
@@ -415,23 +404,23 @@ public abstract class Critter {
 			out[i][j] = " ";
 			}
 		}
-//sets corners to "+"
+		//sets corners to "+"
 		out[0][0] = "+";
 		out[Params.world_height + 1][0] = "+";
 		out[0][Params.world_width + 1] = "+";
 		out[Params.world_height + 1][Params.world_width + 1] = "+";
-//makes first and last row "-" 		
+		//makes first and last row "-" 		
 		for (int i = 1; i <= Params.world_width;i++){
 			out[0][i] = "-";
 			out[Params.world_height + 1][i] = "-";
 		}
-//makes first and last column "|"		
+		//makes first and last column "|"		
 		for (int i = 1; i <= Params.world_height;i++){
 			out[i][0] = "|";
 			out[i][Params.world_width + 1] = "|";
 		}
-//places critters in population on board using their toString return characters
-//limits the placement to the playable area.
+		//places critters in population on board using their toString return characters
+		//limits the placement to the playable area.
 		for (int i = 1; i <= Params.world_height;i++){
 			for (int j = 1; j <= Params.world_width;j++){
 				for (int k = 0; k < getPopulation().size(); k++){
@@ -442,7 +431,7 @@ public abstract class Critter {
 				}
 			}
 		}
-//prints out the board
+		//prints out the board
 		for (int i = 0; i <= Params.world_height + 1;i++){
 			for (int j = 0; j <= Params.world_width + 1;j++){
 				System.out.print(out[i][j]);
@@ -452,28 +441,8 @@ public abstract class Critter {
 
 	}
 
-	public static List<Critter> getPopulation() {
+	private static List<Critter> getPopulation() {
 		return population;
-	}
-
-	public static void setPopulation(List<Critter> population) {
-		Critter.population = population;
-	}
-	
-	public int getX_coord() {
-		return x_coord;
-	}
-
-	public void setX_coord(int x_coord) {
-		this.x_coord = x_coord;
-	}
-
-	public int getY_coord() {
-		return y_coord;
-	}
-
-	public void setY_coord(int y_coord) {
-		this.y_coord = y_coord;
 	}
 
 }

@@ -25,6 +25,9 @@ public class Main {
 	static String[] tokens = new String[5]; 
 	static Scanner in = new Scanner(System.in);
 
+	
+
+	
 	public static void main(String args[]) throws InvalidCritterException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 		while (!(input.toUpperCase().equals("QUIT"))) {
 			System.out.print("Critters>");
@@ -103,7 +106,7 @@ public class Main {
 				catch (NullPointerException e){
 					break;
 				}
-				if (statList.equals(Critter.getPopulation())){
+				if (statList.equals(Critter.TestCritter.getPopulation())){
 					Critter.runStats(statList);
 					break;
 				}

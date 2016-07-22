@@ -19,7 +19,8 @@ public class FraidyCat extends Critter{
 	
 	public boolean fight(String not_used) { 
 		run(dir);
-		return false; }
+		return true; 
+	}
 
 	@Override
 	public void doTimeStep() {
