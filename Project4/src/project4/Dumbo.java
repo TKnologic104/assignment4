@@ -49,23 +49,23 @@ public class Dumbo extends Critter {
 		dir = (dir + turn) % 8;
 	}
 
-	public static void runStats(java.util.List<Critter> Jitters) {
+	public static void runStats(java.util.List<Critter> Dumbo) {
 		int total_straight = 0;
 		int total_left = 0;
 		int total_right = 0;
 		int total_back = 0;
-		for (Object obj : Jitters) {
+		for (Object obj : Dumbo) {
 			Dumbo c = (Dumbo) obj;
 			total_straight += c.genes[0];
 			total_right += c.genes[1] + c.genes[2] + c.genes[3];
 			total_back += c.genes[4];
 			total_left += c.genes[5] + c.genes[6] + c.genes[7];
 		}
-		System.out.print("" + Jitters.size() + " total Jitters    ");
-		System.out.print("" + total_straight / (GENE_TOTAL * 0.01 * Jitters.size()) + "% straight   ");
-		System.out.print("" + total_back / (GENE_TOTAL * 0.01 * Jitters.size()) + "% back   ");
-		System.out.print("" + total_right / (GENE_TOTAL * 0.01 * Jitters.size()) + "% right   ");
-		System.out.print("" + total_left / (GENE_TOTAL * 0.01 * Jitters.size()) + "% left   ");
+		System.out.print("" + Dumbo.size() + " total Dumbo    ");
+		System.out.print("" + ("100% straight   "));
+		System.out.print("" + ("0% right   "));
+		System.out.print("" + ("0% back   "));
+		System.out.print("" + ("0% left   "));
 		System.out.println();
 	}
 }
