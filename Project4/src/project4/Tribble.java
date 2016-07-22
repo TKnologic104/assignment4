@@ -1,5 +1,7 @@
 package project4;
 
+//import project4.Critter.TestCritter;
+
 public class Tribble extends Critter{
 	private static final int GENE_TOTAL = 24;
 	private int[] genes = new int[8];

@@ -343,8 +343,34 @@ public abstract class Critter {
 			super.y_coord = new_y_coord;
 		}
 		
+		protected int getXCoord(){
+			return super.x_coord;
+		}
+		
+		protected int getYCoord(){
+			return super.y_coord;
+		}
+		
         public static List<Critter> getPopulation() {
             return Critter.getPopulation();
+        }
+        
+        public static void setPopulation(Critter c) {
+        	Critter.setPopulation(c);
+        }
+        
+        public static void resolveEncounter(Critter a, Critter b) {
+        	Critter.resolveEncounter(a, b);
+        }
+        
+        public static void cullDead() {
+    		java.util.Iterator<Critter> itr = population.iterator();
+    		while(itr.hasNext()){
+    			Critter c = itr.next();
+    			if (c.getEnergy() <= 0) {
+    				itr.remove();
+    			}
+    		}	
         }
 	}
 	
@@ -443,6 +469,10 @@ public abstract class Critter {
 
 	private static List<Critter> getPopulation() {
 		return population;
+	}
+	
+	private static void setPopulation(Critter c) {
+		population.add(c);
 	}
 
 }

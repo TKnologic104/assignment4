@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+//import project4.Critter.TestCritter;
+
 public class Main {
 
 	static int i = 0;
@@ -24,11 +26,47 @@ public class Main {
 	static String delim = "[ ]+";
 	static String[] tokens = new String[5]; 
 	static Scanner in = new Scanner(System.in);
-
 	
-
-	
-	public static void main(String args[]) throws InvalidCritterException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+	public static void main(String[] args) throws InvalidCritterException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+//		Critter.setSeed(3);
+//		
+//		Craig c = new Craig();
+//		c.setEnergy(Params.start_energy);
+//		c.setXCoord(5); 
+//		c.setYCoord(5);
+//		Critter.TestCritter.setPopulation(c);
+//		
+//		FraidyCat f = new FraidyCat();
+//		f.setEnergy(Params.start_energy);
+//		f.setXCoord(5); 
+//		f.setYCoord(5);
+//		Critter.TestCritter.setPopulation(f);
+//		
+//		Tribble t0 = new Tribble();
+//		t0.setEnergy(Params.start_energy);
+//		t0.setXCoord(5); 
+//		t0.setYCoord(5);
+//		Critter.TestCritter.setPopulation(t0);
+//		
+//		Tribble t = new Tribble();
+//		t.setEnergy(Params.start_energy);
+//		t.setXCoord(3); 
+//		t.setYCoord(5);
+//		Critter.TestCritter.setPopulation(t);
+//		
+//		for (Critter a: Critter.TestCritter.getPopulation()) {
+//			for (Critter b: Critter.TestCritter.getPopulation()) {
+//				TestCritter a1 = (TestCritter) a;
+//				TestCritter b1 = (TestCritter) b;
+//				if (a1 != b1 && a1.getXCoord() == b1.getXCoord() && a1.getYCoord() == b1.getYCoord()) {
+//					Critter.TestCritter.resolveEncounter(a1,b1);
+//				}
+//			}
+//		}
+//		
+//		Critter.TestCritter.resolveEncounter(c, f);
+//		Critter.TestCritter.cullDead();
+		
 		while (!(input.toUpperCase().equals("QUIT"))) {
 			System.out.print("Critters>");
 			input = in.nextLine();

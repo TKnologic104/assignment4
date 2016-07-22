@@ -1,5 +1,7 @@
 package project4;
 
+//import project4.Critter.TestCritter;
+
 public class Craig extends Critter {
 	
 	@Override
@@ -23,7 +25,7 @@ public class Craig extends Critter {
 		/* take one step forward */
 		walk(dir);
 		
-		if (getEnergy() > 150) { 
+		if (getEnergy() > 75) { 
 			Craig child = new Craig();
 			for (int k = 0; k < 8; k += 1) {
 				child.genes[k] = this.genes[k];
