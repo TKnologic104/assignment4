@@ -33,21 +33,21 @@ public class Main {
 			switch (tokens[0]){
 			case "quit":
 				if (tokens.length > 1){
-					System.out.println("Invalid Command");
+					System.out.println("Invalid Command: " + input);
 					break;
 				}
 				input = tokens[0];
 				break;
 			case "show":
 				if (tokens.length > 1){
-					System.out.println("Invalid Command");
+					System.out.println("Invalid Command: " + input);
 					break;
 				}
 				Critter.displayWorld();
 				break;
 			case "step":
 				if (tokens.length > 2){
-					System.out.println("Invalid Command");
+					System.out.println("Invalid Command: " + input);
 					break;
 				}
 				i = 1;
@@ -60,7 +60,7 @@ public class Main {
 				break;
 			case "seed":
 				if (tokens.length > 2){
-					System.out.println("Invalid Command");
+					System.out.println("Invalid Command: " + input);
 					break;
 				}
 				i = 1;
@@ -71,12 +71,8 @@ public class Main {
 				Critter.setSeed(i);
 				break;
 			case "make":
-//				Critter.makeCritter("project4.Craig");
-//				Critter.makeCritter("project4.Jitter");
-//				Critter.makeCritter("project4.Bitter");
-//				break;
 				if (tokens.length > 3){
-					System.out.println("Invalid Command");
+					System.out.println("Invalid Command: " + input);
 					break;
 				}
 				i = 1;
@@ -89,24 +85,28 @@ public class Main {
 				break;
 			case "stats":
 				if (tokens.length > 2){
-					System.out.println("Invalid Command");
+					System.out.println("Invalid Command: " + input);
 					break;
 				}
 				if (!(tokens.length == 2)){
-					System.out.println("Invalid Command - stats");
+					System.out.println("Invalid Command: " + input);
 					break;
 				}
 				List<Critter> statList = new ArrayList<Critter>();
 				statList = Critter.getInstances(tokens[1]);
-				if (statList.size() <= 0){
-					System.out.println("No instances found");
+				try{
+					if (statList.size() <= 0){
+						System.out.println("No instances found");
+						break;
+					}
+				}
+				catch (NullPointerException e){
 					break;
 				}
 				if (statList.equals(Critter.getPopulation())){
 					Critter.runStats(statList);
 					break;
 				}
-				//Critter.runStats(statList);
 				Object ob = null;
 				Method m1 = null; // super class to all methods of any particular class
 				Class<?> cls = Class.forName(tokens[1]);
@@ -114,21 +114,21 @@ public class Main {
 				try {
 					m1 = ob.getClass().getMethod("runStats", List.class);
 				} catch (NoSuchMethodException | SecurityException e) {
-					System.out.println("No Such Method");
+					System.out.println("Invalid Command: " + input);
 					return;
 					//e.printStackTrace();
 				}
 				try {
 					m1.invoke(ob, statList);
 				} catch (IllegalArgumentException | InvocationTargetException e) {
-					System.out.println("Illegal Argument Exception");
+					System.out.println("Invalid Command: " + input);
 					return;
 					//e.printStackTrace();
 				}
 				break;
 			default:
 				//if (!(input.equals("START"))){
-					System.out.println("Invalid command");
+					System.out.println("Invalid Command: " + input);
 			//}
 				 break;
 			}
@@ -149,11 +149,11 @@ public class Main {
 			i = Integer.parseInt(str);
 		}
 		 catch(NumberFormatException er) {
-			 System.out.println("Invalid command");
+			 System.out.println("Invalid Command: " + input);
 			 return 0;
 		}
 		if (i < 1){
-			 System.out.println("Invalid command");
+			 System.out.println("Invalid Command:" + input);
 			 return 0;
 		}
 		return i;

@@ -260,6 +260,13 @@ public abstract class Critter {
 		String delim = "[.]";
 		String[] tokens = new String[2];
 		tokens = critter_class_name.split(delim);
+		
+///*************************************************************************		
+		if (!critter_class_name.contains(".")){
+			System.out.println("Invalid Command: stats " + critter_class_name);
+			return null;
+		}
+		
 		if (tokens[1].equals("Critter")){
 			return population;
 		}
@@ -270,19 +277,22 @@ public abstract class Critter {
 			try {
 				ob = cls.newInstance();
 			} catch (InstantiationException e) {
-				System.out.println("Its here in getInstaces! this is an error");
+				System.out.println("Invalid Command: stats " + critter_class_name);
 				return null;
 				//e.printStackTrace();
 			} catch (IllegalAccessException e) {
-				System.out.println("Its here in getInstaces! this is an error");
+				System.out.println("Invalid Command: stats " + critter_class_name);
 				return null;
 				//e.printStackTrace();
 			} 
 		} catch (ClassNotFoundException e) {
-			System.out.println("Its here in getInstaces! this is an error");
+			System.out.println("Invalid Command: stats " + critter_class_name);
 			return null;
 			//e.printStackTrace();
 		}
+		
+///*************************************************************************
+		
 		for (int k = 0; k < getPopulation().size(); k++){
 			if ((getPopulation().get(k)).getClass().isInstance(ob)){
 				result.add(getPopulation().get(k));
@@ -290,6 +300,8 @@ public abstract class Critter {
 		}
 		return result;
 	}
+	
+		
 	
 	public static void runStats(List<Critter> critters) {
 		System.out.print("" + critters.size() + " critters as follows -- ");
