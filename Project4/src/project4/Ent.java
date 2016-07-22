@@ -22,7 +22,7 @@ public class Ent extends Critter {
 	public void doTimeStep() {
 
 		
-		if (getEnergy() > 75) {
+		if (getEnergy() > Params.min_reproduce_energy + Params.start_energy) {
 			Ent child = new Ent();
 			for (int k = 0; k < 8; k += 1) {
 				child.genes[k] = this.genes[k];

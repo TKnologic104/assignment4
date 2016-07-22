@@ -21,7 +21,7 @@ public class FraidyCat extends Critter{
 	
 	public boolean fight(String not_used) { 
 		run(dir);
-		return true; 
+		return false; 
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class FraidyCat extends Critter{
 			walk(dir);
 		}
 		
-		if (getEnergy() > Params.min_reproduce_energy) {
+		if (getEnergy() > (Params.start_energy - Params.min_reproduce_energy)) {
 			FraidyCat child = new FraidyCat();
 			for (int k = 0; k < 8; k += 1) {
 				child.genes[k] = this.genes[k];

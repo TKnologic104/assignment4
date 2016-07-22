@@ -203,9 +203,15 @@ public abstract class Critter {
 		int b_AttackRoll = 0;
 		
 		if (a.fight(b.toString())) {
+			if(a.getEnergy() <= 0) {
+				return;
+			}
 			a_AttackRoll = Critter.getRandomInt(a.getEnergy());
 		}
 		if (b.fight(a.toString())) {
+			if(b.getEnergy() <= 0) {
+				return;
+			}
 			b_AttackRoll = Critter.getRandomInt(b.getEnergy());
 		}
 		if (a.x_coord == b.x_coord && a.y_coord == b.y_coord) {
