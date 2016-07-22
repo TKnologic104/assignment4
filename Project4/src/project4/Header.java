@@ -1,4 +1,3 @@
-
 package project4;
 
 /* CRITTERS <MyClass.java>
@@ -13,4 +12,3 @@ package project4;
  * Slip days used: <0>
  * Summer 2016
  */
-

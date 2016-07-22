@@ -1,30 +1,39 @@
 package project4;
 
-public class Craig extends Critter {
+//import project4.Critter.TestCritter;
+
+public class FraidyCat extends Critter{
 	
 	@Override
-	public String toString() { return "C"; }
+	public String toString() { return "F"; }
 	
 	private static final int GENE_TOTAL = 24;
 	private int[] genes = new int[8];
 	private int dir;
+
 	
-	public Craig() {
+	public FraidyCat() {
 		for (int k = 0; k < 8; k += 1) {
 			genes[k] = GENE_TOTAL / 8;
 		}
 		dir = Critter.getRandomInt(8);
 	}
 	
-	public boolean fight(String not_used) { return true; }
+	public boolean fight(String not_used) { 
+		run(dir);
+		return true; 
+	}
 
 	@Override
 	public void doTimeStep() {
 		/* take one step forward */
-		walk(dir);
+		boolean myRandomBoolean = (Critter.getRandomInt(1) == 1);
+		if (myRandomBoolean) {
+			walk(dir);
+		}
 		
-		if (getEnergy() > 150) {
-			Craig child = new Craig();
+		if (getEnergy() > Params.min_reproduce_energy) {
+			FraidyCat child = new FraidyCat();
 			for (int k = 0; k < 8; k += 1) {
 				child.genes[k] = this.genes[k];
 			}
@@ -50,23 +59,23 @@ public class Craig extends Critter {
 		dir = (dir + turn) % 8;
 	}
 
-	public static void runStats(java.util.List<Critter> craigs) {
+	public static void runStats(java.util.List<Critter> FraidyCats) {
 		int total_straight = 0;
 		int total_left = 0;
 		int total_right = 0;
 		int total_back = 0;
-		for (Object obj : craigs) {
-			Craig c = (Craig) obj;
+		for (Object obj : FraidyCats) {
+			FraidyCat c = (FraidyCat) obj;
 			total_straight += c.genes[0];
 			total_right += c.genes[1] + c.genes[2] + c.genes[3];
 			total_back += c.genes[4];
 			total_left += c.genes[5] + c.genes[6] + c.genes[7];
 		}
-		System.out.print("" + craigs.size() + " total Craigs    ");
-		System.out.print("" + total_straight / (GENE_TOTAL * 0.01 * craigs.size()) + "% straight   ");
-		System.out.print("" + total_back / (GENE_TOTAL * 0.01 * craigs.size()) + "% back   ");
-		System.out.print("" + total_right / (GENE_TOTAL * 0.01 * craigs.size()) + "% right   ");
-		System.out.print("" + total_left / (GENE_TOTAL * 0.01 * craigs.size()) + "% left   ");
+		System.out.print("" + FraidyCats.size() + " total FraidyCats    ");
+		System.out.print("" + total_straight / (GENE_TOTAL * 0.01 * FraidyCats.size()) + "% straight   ");
+		System.out.print("" + total_back / (GENE_TOTAL * 0.01 * FraidyCats.size()) + "% back   ");
+		System.out.print("" + total_right / (GENE_TOTAL * 0.01 * FraidyCats.size()) + "% right   ");
+		System.out.print("" + total_left / (GENE_TOTAL * 0.01 * FraidyCats.size()) + "% left   ");
 		System.out.println();
 	}
 }
