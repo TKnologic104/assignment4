@@ -70,7 +70,7 @@ public class Main {
 		while (!(input.toUpperCase().equals("QUIT"))) {
 			System.out.print("Critters>");
 			input = in.nextLine();
-			tokens = input.split(delim);
+			tokens = input.trim().split(delim);
 			switch (tokens[0]){
 			case "quit":
 				if (tokens.length > 1){
