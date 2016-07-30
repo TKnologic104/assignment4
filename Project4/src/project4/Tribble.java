@@ -13,9 +13,9 @@
 
 package project4;
 
-//import project4.Critter.TestCritter;
+import project4.Critter.TestCritter;
 
-public class Tribble extends Critter{
+public class Tribble extends TestCritter{
 	private static final int GENE_TOTAL = 24;
 	private int[] genes = new int[8];
 	private int dir;
@@ -32,21 +32,18 @@ public class Tribble extends Critter{
 	
 	@Override
 	public void doTimeStep() {
-		walk(dir);
+		//walk(dir);
 		
-		if (getEnergy() > Params.min_reproduce_energy) { 
-			Tribble child = new Tribble();
-			for (int k = 0; k < 8; k += 1) {
-				child.genes[k] = this.genes[k];
-			}
-			int g = Critter.getRandomInt(8);
-			while (child.genes[g] == 0) {
-				g = Critter.getRandomInt(8);
-			}
-			child.genes[g] -= 1;
-			g = Critter.getRandomInt(8);
-			child.genes[g] += 1;
-			reproduce(child, Critter.getRandomInt(8));
+		Critter c = new Tribble();
+		int mateDir = lookForMate();
+		int emptyDir = lookForEmpty();
+		if (mateDir >= 0) {
+			int babyDirection = emptyDir < 0 ? 0: emptyDir;
+			if (getEnergy() - Params.min_reproduce_energy > 0)
+				reproduce(c, babyDirection);
+		} else if (emptyDir >= 0) {
+			if (getEnergy() - Params.walk_energy_cost > 0)
+				walk(emptyDir);
 		}
 		
 		int roll = Critter.getRandomInt(GENE_TOTAL);
@@ -59,6 +56,32 @@ public class Tribble extends Critter{
 		
 		dir = (dir + turn) % 8;
 		
+	}
+	
+	private int lookForMate() {
+		int direction = -1;
+		for (int dir = 0; dir <= 7; dir++) {
+			String neighbor = null;
+			if (getEnergy() - Params.look_energy_cost > 0) 
+				neighbor = look(dir);
+			if (neighbor != null && neighbor.equals(this.toString()) ) {
+				direction = dir;
+				break;
+			}
+		}
+		return direction;
+	}
+	
+	private int lookForEmpty() {
+		int direction = -1;
+		for (int dir = 0; dir <= 7; dir++) {
+			if (getEnergy() - Params.look_energy_cost > 0) 
+				if (look(dir) == null) {
+					direction = dir;
+					break;
+				}
+		}
+		return direction;
 	}
 
 	@Override

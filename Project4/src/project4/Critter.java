@@ -14,8 +14,6 @@ package project4;
 
 import java.util.List;
 
-import javax.swing.text.html.HTMLDocument.Iterator;
-
 /* see the PDF for descriptions of the methods and fields in this class
  * you may add fields, methods or inner classes to Critter ONLY if you make your additions private
  * no new public, protected or default-package code or data can be added to Critter
@@ -378,6 +376,40 @@ public abstract class Critter {
     			}
     		}	
         }
+        
+    	/**
+    	 * 
+    	 * @param name String should be Algae or FriendlyCritter
+    	 * @param x	X location
+    	 * @param y	Y location
+    	 * @throws IllegalArgumentException If String not one of these two.
+    	 */
+    	public static void addCritter (String name, int x, int y) {
+    		Critter c = null;
+    		if (name.equals("Algae")) {
+    			c = new Algae();
+    			c.x_coord = x;
+    			c.y_coord = y;
+    			population.add(c);
+    		} else if (name.equals("Tribble")) {
+    			c = new Tribble();
+    			c.x_coord = x;
+    			c.y_coord = y;
+    		} else {
+    			throw new IllegalArgumentException("Wrong Critter.");
+    		}
+    		population.add(c);
+    	}
+    	
+    	/**
+    	 * 
+    	 * @param c Adds this supplied critter.
+    	 */
+    	public static void addCritter(Critter c) {
+    		if (c != null) {
+    			population.add(c);
+    		}
+    	}
 	}
 	
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
@@ -479,6 +511,51 @@ public abstract class Critter {
 	
 	private static void setPopulation(Critter c) {
 		population.add(c);
+	}
+	
+	/**
+	 * Looks in given direction 1 step away.
+	 * @param direction Direction to look, starts from 0 (right), goes counter-clockwise to 7.
+	 * @return toString of Critter in location, or null.
+	 */
+	protected String look (int direction) {
+		if (energy <= 0) return null;
+		int [] lookLocation = getNewCoords(direction);
+		
+		Critter c = null;
+		for (Critter cr: population) {
+			if (cr.x_coord == lookLocation[0] && cr.y_coord == lookLocation[1]) {
+				c = cr;
+				break;
+			}			
+		}
+		if (c == null) {
+			return null;
+		}
+		energy -= Params.look_energy_cost;
+		return c.toString();			
+	}
+	
+	// Returns the new co-ordinates after n steps in the given direction.
+	private int[] getNewCoords(int direction) {
+		int w = Params.world_width; int h = Params.world_height;
+		int newX = x_coord + w; int newY = y_coord + h;
+		
+		switch (direction) {
+		case 0: newX = (newX += 1); break;
+		case 1: newX = (newX += 1);
+				newY = (newY -= 1); break;
+		case 2: newY = (newY -= 1); break;
+		case 3: newX = (newX -= 1);
+				newY = (newY -= 1); break;
+		case 4: newX = (newX -= 1); break;
+		case 5: newX = (newX -= 1);
+				newY = (newY += 1); break;
+		case 6: newY = (newY += 1); break;
+		case 7: newX = (newX += 1); 
+				newY = (newY += 1); break;
+		}
+		return new int[]{newX%w, newY%h};
 	}
 
 }

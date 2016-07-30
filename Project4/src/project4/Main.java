@@ -17,7 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-//import project4.Critter.TestCritter;
+
+import project4.Critter.TestCritter;
 
 public class Main {
 
@@ -66,6 +67,26 @@ public class Main {
 //		
 //		Critter.TestCritter.resolveEncounter(c, f);
 //		Critter.TestCritter.cullDead();
+		
+		// Add Algae and 1 F
+		TestCritter.addCritter ("Algae", 1, 1);
+		TestCritter.addCritter ("Algae", 1, 2);
+		TestCritter.addCritter ("Algae", 1, 3);
+		TestCritter.addCritter ("Algae", 2, 1);
+		TestCritter.addCritter ("Algae", 2, 3);
+		TestCritter.addCritter ("Algae", 3, 1);
+		TestCritter.addCritter ("Algae", 3, 3);
+		TestCritter.displayWorld();
+		TestCritter t = new Tribble();
+		t.setXCoord(2);
+		t.setYCoord(2);
+		t.setEnergy(Params.start_energy);
+		TestCritter.addCritter(t);
+		Critter.displayWorld();		
+		
+		// Make the single F walk
+		Critter.worldTimeStep();
+		Critter.displayWorld();	
 		
 		while (!(input.toUpperCase().equals("QUIT"))) {
 			System.out.print("Critters>");
