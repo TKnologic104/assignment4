@@ -72,36 +72,36 @@ public abstract class Critter {
 		if (this.inFight) {
 			switch (direction) {
 			case 0:
-				peekX = this.x_coord + speed;	// look straight right
-				peekY = this.y_coord;
+				peekX = this.getX_coord() + speed;	// look straight right
+				peekY = this.getY_coord();
 				break;
 			case 1:
-				peekX = this.x_coord + speed;	// look upper right
-				peekY = this.y_coord - speed;	
+				peekX = this.getX_coord() + speed;	// look upper right
+				peekY = this.getY_coord() - speed;	
 				break;
 			case 2:
-				peekX = this.x_coord;
-				peekY = this.y_coord - speed; 	// look straight up
+				peekX = this.getX_coord();
+				peekY = this.getY_coord() - speed; 	// look straight up
 				break;
 			case 3:
-				peekX = this.x_coord - speed;	// look upper left
-				peekY = this.y_coord - speed;
+				peekX = this.getX_coord() - speed;	// look upper left
+				peekY = this.getY_coord() - speed;
 				break;
 			case 4:
-				peekX = this.x_coord - speed;	// look straight left
-				peekY = this.y_coord;
+				peekX = this.getX_coord() - speed;	// look straight left
+				peekY = this.getY_coord();
 				break;
 			case 5:
-				peekX = this.x_coord - speed;	// look lower left
-				peekY = this.y_coord + speed;
+				peekX = this.getX_coord() - speed;	// look lower left
+				peekY = this.getY_coord() + speed;
 				break;
 			case 6:
-				peekX = this.x_coord;
-				peekY = this.y_coord + speed;	// look straight down
+				peekX = this.getX_coord();
+				peekY = this.getY_coord() + speed;	// look straight down
 				break;
 			case 7:
-				peekX = this.x_coord + speed;	// look lower right
-				peekY = this.y_coord + speed;
+				peekX = this.getX_coord() + speed;	// look lower right
+				peekY = this.getY_coord() + speed;
 				break;
 			default:
 				System.out.println("invalid direction");
@@ -109,7 +109,7 @@ public abstract class Critter {
 			}	
 			
 			for(Critter c: population) {
-				if (this != c && c.x_coord == peekX && c.y_coord == peekY) {
+				if (this != c && c.getX_coord() == peekX && c.getY_coord() == peekY) {
 					return;
 				}
 			}
@@ -117,60 +117,60 @@ public abstract class Critter {
 		
 		switch (direction) {
 		case 0:
-			this.x_coord += speed;	// go straight right
+			this.setX_coord(this.getX_coord() + speed);	// go straight right
 			break;
 		case 1:
-			this.x_coord += speed;	// go upper right
-			this.y_coord -= speed;	
+			this.setX_coord(this.getX_coord() + speed);	// go upper right
+			this.setY_coord(this.getY_coord() - speed);	
 			break;
 		case 2:
-			this.y_coord -= speed; 	// go straight up
+			this.setY_coord(this.getY_coord() - speed); 	// go straight up
 			break;
 		case 3:
-			this.x_coord -= speed;	// go upper left
-			this.y_coord -= speed;
+			this.setX_coord(this.getX_coord() - speed);	// go upper left
+			this.setY_coord(this.getY_coord() - speed);
 			break;
 		case 4:
-			this.x_coord -= speed;	// go straight left
+			this.setX_coord(this.getX_coord() - speed);	// go straight left
 			break;
 		case 5:
-			this.x_coord -= speed;	// go lower left
-			this.y_coord += speed;
+			this.setX_coord(this.getX_coord() - speed);	// go lower left
+			this.setY_coord(this.getY_coord() + speed);
 			break;
 		case 6:
-			this.y_coord += speed;	// go straight down
+			this.setY_coord(this.getY_coord() + speed);	// go straight down
 			break;
 		case 7:
-			this.x_coord += speed;	// go lower right
-			this.y_coord += speed;
+			this.setX_coord(this.getX_coord() + speed);	// go lower right
+			this.setY_coord(this.getY_coord() + speed);
 			break;
 		default:
 			System.out.println("invalid direction");
 			break;
 		}
-		if (x_coord == Params.world_width+1){
-			x_coord = x_coord - Params.world_width;
+		if (getX_coord() == Params.world_width+1){
+			setX_coord(getX_coord() - Params.world_width);
 		}
-		if (x_coord == Params.world_width+2){
-			x_coord = x_coord - (Params.world_width);
+		if (getX_coord() == Params.world_width+2){
+			setX_coord(getX_coord() - (Params.world_width));
 		}
-		if (x_coord == 0){
-			x_coord = Params.world_width;
+		if (getX_coord() == 0){
+			setX_coord(Params.world_width);
 		}
-		if (x_coord < 0){
-			x_coord = Params.world_width+1;
+		if (getX_coord() < 0){
+			setX_coord(Params.world_width+1);
 		}
-		if (y_coord == Params.world_height+1){
-			y_coord = y_coord - Params.world_height;
+		if (getY_coord() == Params.world_height+1){
+			setY_coord(getY_coord() - Params.world_height);
 		}
-		if (y_coord == Params.world_height+2){
-			y_coord = y_coord - (Params.world_height);
+		if (getY_coord() == Params.world_height+2){
+			setY_coord(getY_coord() - (Params.world_height));
 		}
-		if (y_coord == 0){
-			y_coord = Params.world_height;
+		if (getY_coord() == 0){
+			setY_coord(Params.world_height);
 		}
-		if (y_coord < 0){
-			y_coord = Params.world_height+1;
+		if (getY_coord() < 0){
+			setY_coord(Params.world_height+1);
 		}
 	}
 	
@@ -184,8 +184,8 @@ public abstract class Critter {
 		offspring.setEnergy(this.getEnergy() / 2);
 		this.setEnergy((int)Math.ceil(this.getEnergy() / 2.0));
 		/* place baby in adjacent space to parent */
-		offspring.x_coord = this.x_coord;
-		offspring.y_coord = this.y_coord;
+		offspring.setX_coord(this.getX_coord());
+		offspring.setY_coord(this.getY_coord());
 		offspring.move(direction, 1, 0);
 		/* stage babies */
 		babies.add(offspring);
@@ -214,7 +214,7 @@ public abstract class Critter {
 			}
 			b_AttackRoll = Critter.getRandomInt(b.getEnergy());
 		}
-		if (a.x_coord == b.x_coord && a.y_coord == b.y_coord) {
+		if (a.getX_coord() == b.getX_coord() && a.getY_coord() == b.getY_coord()) {
 			if (a_AttackRoll >= b_AttackRoll) {
 				a.setEnergy(b.getEnergy() / 2);
 				b.setEnergy(0);
@@ -252,8 +252,8 @@ public abstract class Critter {
 
 		} 
 		Critter c = (Critter) ob;
-		c.x_coord = Critter.getRandomInt(Params.world_width-1)+1;
-		c.y_coord = Critter.getRandomInt(Params.world_height-1)+1;
+		c.setX_coord(Critter.getRandomInt(Params.world_width-1)+1);
+		c.setY_coord(Critter.getRandomInt(Params.world_height-1)+1);
 		c.energy = Params.start_energy;
 		population.add(c);
 	}
@@ -350,11 +350,11 @@ public abstract class Critter {
 		}
 		
 		protected int getXCoord(){
-			return super.x_coord;
+			return super.getX_coord();
 		}
 		
 		protected int getYCoord(){
-			return super.y_coord;
+			return super.getY_coord();
 		}
 		
         public static List<Critter> getPopulation() {
@@ -396,7 +396,7 @@ public abstract class Critter {
 		/* resolve encounters*/				
 		for (Critter a: population) {
 			for (Critter b: population) {
-				if (a != b && a.x_coord == b.x_coord && a.y_coord == b.y_coord) {
+				if (a != b && a.getX_coord() == b.getX_coord() && a.getY_coord() == b.getY_coord()) {
 					resolveEncounter(a,b);
 				}
 			}
@@ -428,7 +428,11 @@ public abstract class Critter {
 	}
 
 	
-	public static void displayWorld() {
+//	public static void displayWorld() {
+//		testing.launch(testing.class);
+//	}
+	
+	public static void displayWorldOld() {
 		//fills whole grid with " ".
 		String[][] out = new String[Params.world_height + 2][Params.world_width + 2]; // adds room for border.
 		for (int i = 0; i <= Params.world_height + 1;i++){
@@ -456,7 +460,7 @@ public abstract class Critter {
 		for (int i = 1; i <= Params.world_height;i++){
 			for (int j = 1; j <= Params.world_width;j++){
 				for (int k = 0; k < getPopulation().size(); k++){
-					if (((getPopulation().get(k)).x_coord == j) && ((getPopulation().get(k)).y_coord == i)){ 
+					if (((getPopulation().get(k)).getX_coord() == j) && ((getPopulation().get(k)).getY_coord() == i)){ 
 						out[i][j] = getPopulation().get(k).toString();
 						break;
 					}
@@ -473,12 +477,28 @@ public abstract class Critter {
 
 	}
 
-	private static List<Critter> getPopulation() {
+	static List<Critter> getPopulation() {
 		return population;
 	}
 	
 	private static void setPopulation(Critter c) {
 		population.add(c);
+	}
+
+	public int getX_coord() {
+		return x_coord;
+	}
+
+	public void setX_coord(int x_coord) {
+		this.x_coord = x_coord;
+	}
+
+	public int getY_coord() {
+		return y_coord;
+	}
+
+	public void setY_coord(int y_coord) {
+		this.y_coord = y_coord;
 	}
 
 }

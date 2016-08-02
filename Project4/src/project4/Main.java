@@ -16,18 +16,154 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+import javafx.event.EventHandler;
+import javafx.geometry.Orientation;
+import javafx.event.ActionEvent;
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.ToolBar;
+import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.ArcType;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
 //import project4.Critter.TestCritter;
 
-public class Main {
+public class Main extends Application {
 
-	static int i = 0;
-	static String input = "START";
-	static String delim = "[ ]+";
-	static String[] tokens = new String[5]; 
-	static Scanner in = new Scanner(System.in);
-	
-	public static void main(String[] args) throws InvalidCritterException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+//	static int i = 10;
+//	static String input = "START";
+//	static String delim = "[ ]+";
+//	static String[] tokens = new String[5]; 
+//	static Scanner in = new Scanner(System.in);
+			 
+	public static void main(String[] args) {
+        launch(args);
+    }
+
+	@Override
+    public void start(Stage primaryStage) {
+    	primaryStage.setTitle("Drawing Operations Test");
+    	Group root = new Group();
+
+		Button btnQuit = new Button("QUIT");
+		btnQuit.setLayoutX(10);
+		btnQuit.setLayoutY(100);
+		Button btnPause = new Button("PAUSE");
+		btnPause.setLayoutX(10);
+		btnPause.setLayoutY(150);
+		Button btnPlay = new Button("PLAY");
+		btnPlay.setLayoutX(10);
+		btnPlay.setLayoutY(200);
+    	RadioButton rb1 = new RadioButton("1/2");
+		RadioButton rb2 = new RadioButton("1/2");
+		RadioButton rb3 = new RadioButton("1/2");
+		ToggleGroup tg = new ToggleGroup();
+		tg.getToggles().addAll(rb1, rb2, rb3);
+    	ToolBar toolbar = new ToolBar(
+    			new Button("SEED"),
+    			new Button("MAKE"),
+    			new Button("STATS"),
+    			new Button("+SPEED"),
+    			new Button("-SPEED")
+    			);
+    	toolbar.getItems().addAll(rb1, rb2, rb3, btnQuit, btnPause, btnPlay);
+    	toolbar.setOrientation(Orientation.VERTICAL);
+    	BorderPane pane = new BorderPane();
+    	pane.setRight(toolbar);
+
+    	Timeline timeline = new Timeline();
+
+//    	root.getChildren().add(pane);
+    	Canvas canvas = new Canvas(Params.world_width * 6, Params.world_height * 5);
+     	btnPause.setOnAction(new EventHandler<ActionEvent>(){
+      		@Override
+      		public void handle(ActionEvent e){
+      			System.out.println("pause");
+      			timeline.pause();
+      		}
+      	});
+     	btnPlay.setOnAction(new EventHandler<ActionEvent>(){
+      		@Override
+      		public void handle(ActionEvent e){
+      			System.out.println("play");
+      			timeline.play();
+      		}
+      	});
+        root.getChildren().add(btnPause);
+        root.getChildren().add(btnPlay);
+        root.getChildren().add(canvas);
+    	primaryStage.setScene(new Scene(root));
+    	GraphicsContext gc = canvas.getGraphicsContext2D();
+
+    	
+        timeline.setCycleCount(Timeline.INDEFINITE); 
+        KeyFrame kf = new KeyFrame(
+                 Duration.seconds(1),                // 60 FPS
+                 new EventHandler<ActionEvent>(){
+                     public void handle(ActionEvent ae)
+                 {
+                 // Clear the canvas
+                 gc.clearRect(Params.world_width * 1, 0, Params.world_width * 5, Params.world_height * 5);
+                 Critter.worldTimeStep();
+                 drawShapes(gc);
+                 }
+             }
+        );
+		            
+        // play 40s of animation
+        timeline.getKeyFrames().add(kf);
+        timeline.play();       
+
+        primaryStage.show();
+//      primaryStage.close();
+    }
+
+    private void drawShapes(GraphicsContext gc) {
+		/*
+		    	try {
+					Critter.makeCritter("project4.Dumbo");
+				} catch (InvalidCritterException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		*/
+		gc.setFill(Color.GREEN);
+		gc.setFont(new Font(STYLESHEET_CASPIAN,10));
+		for (int i = 1; i <= Params.world_height;i++){
+			for (int j = 1; j <= Params.world_width;j++){
+				for (int k = 0; k < Critter.getPopulation().size(); k++){
+					if (((Critter.getPopulation().get(k)).getX_coord() == j) && ((Critter.getPopulation().get(k)).getY_coord() == i)){ 
+						String str = Critter.getPopulation().get(k).toString();
+//						Image img = new Image(getClass().getResourceAsStream("Dumbo.jpg"));
+//						Image img = new Image("Beetle.png");
+//						gc.drawImage(img, 10 + j * 5, i * 5, 5, 5);
+//						gc.fillText(str, 10 + j * 5, i * 5);
+						gc.fillRect(Params.world_width + j * 5, i * 5, 5, 5);
+						break;
+					}
+				}
+			}
+		}
+	}
+}
+    
+    
 //		Critter.setSeed(3);
 //		
 //		Craig c = new Craig();
@@ -67,6 +203,7 @@ public class Main {
 //		Critter.TestCritter.resolveEncounter(c, f);
 //		Critter.TestCritter.cullDead();
 		
+/*
 		while (!(input.toUpperCase().equals("QUIT"))) {
 			System.out.print("Critters>");
 			input = in.nextLine();
@@ -174,13 +311,12 @@ public class Main {
 				 break;
 			}
 		}
-		System.out.println("Bye");
-	}
-	
+		System.out.println("Bye");	
 	/** converts string into an integer value, and also prints Invalid command if its not a valid integer.
 	 * @param str
 	 * @return
 	 */
+/*
 	public static int getNumber(String str){
 		int i = 0;
 		if (str == null || str == "" || str == " "){
@@ -199,5 +335,5 @@ public class Main {
 		}
 		return i;
 	}
+*/
 
-}
