@@ -33,8 +33,24 @@ public class FraidyCat extends Critter{
 	}
 	
 	public boolean fight(String not_used) { 
+		int emptyDir = lookForEmpty();
+		if (emptyDir >= 0) {
+			dir = emptyDir;
+		}
 		run(dir);
 		return false; 
+	}
+	
+	private int lookForEmpty() {
+		int direction = -1;
+		for (int dir = 0; dir <= 7; dir++) {
+			if (getEnergy() - Params.look_energy_cost > 0) 
+				if (look2(dir) == null) {
+					direction = dir;
+					break;
+				}
+		}
+		return direction;
 	}
 
 	@Override
@@ -90,5 +106,11 @@ public class FraidyCat extends Critter{
 		System.out.print("" + total_right / (GENE_TOTAL * 0.01 * FraidyCats.size()) + "% right   ");
 		System.out.print("" + total_left / (GENE_TOTAL * 0.01 * FraidyCats.size()) + "% left   ");
 		System.out.println();
+	}
+
+	@Override
+	public CritterShape viewShape() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

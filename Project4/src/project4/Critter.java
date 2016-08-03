@@ -19,6 +19,100 @@ import java.util.List;
  * no new public, protected or default-package code or data can be added to Critter
  */
 public abstract class Critter {
+
+	/* NEW FOR PROJECT 5 */
+	public enum CritterShape {
+		CIRCLE,
+		SQUARE,
+		TRIANGLE,
+		DIAMOND,
+		STAR
+	}
+	
+	/* the default color is white, which I hope makes critters invisible by default
+	 * If you change the background color of your View component, then update the default
+	 * color to be the same as you background 
+	 * 
+	 * critters must override at least one of the following three methods, it is not 
+	 * proper for critters to remain invisible in the view
+	 * 
+	 * If a critter only overrides the outline color, then it will look like a non-filled 
+	 * shape, at least, that's the intent. You can edit these default methods however you 
+	 * need to, but please preserve that intent as you implement them. 
+	 */
+	public javafx.scene.paint.Color viewColor() { 
+		return javafx.scene.paint.Color.WHITE; 
+	}
+	
+	public javafx.scene.paint.Color viewOutlineColor() { return viewColor(); }
+	public javafx.scene.paint.Color viewFillColor() { return viewColor(); }
+	
+	public abstract CritterShape viewShape(); 
+	
+	/**
+	 * Looks in given direction 1 step away.
+	 * @param direction Direction to look, starts from 0 (right), goes counter-clockwise to 7.
+	 * @return toString of Critter in location, or null.
+	 */
+	protected String look (int direction) {
+		if (energy <= 0) return null;
+		int [] lookLocation = getNewCoords(direction, 1);
+		
+		Critter c = null;
+		for (Critter cr: population) {
+			if (cr.x_coord == lookLocation[0] && cr.y_coord == lookLocation[1]) {
+				c = cr;
+				break;
+			}			
+		}
+		if (c == null) {
+			return null;
+		}
+		energy -= Params.look_energy_cost;
+		return c.toString();			
+	}
+	
+	protected String look2 (int direction) {
+		if (energy <= 0) return null;
+		int [] lookLocation = getNewCoords(direction, 2);
+		
+		Critter c = null;
+		for (Critter cr: population) {
+			if (cr.x_coord == lookLocation[0] && cr.y_coord == lookLocation[1]) {
+				c = cr;
+				break;
+			}			
+		}
+		if (c == null) {
+			return null;
+		}
+		energy -= Params.look_energy_cost;
+		return c.toString();			
+	}
+	// Returns the new co-ordinates after n steps in the given direction.
+	private int[] getNewCoords(int direction, int visionDistance) {
+		int w = Params.world_width; int h = Params.world_height;
+		int newX = x_coord + w; int newY = y_coord + h;
+		
+		switch (direction) {
+		case 0: newX = (newX += visionDistance); break;
+		case 1: newX = (newX += visionDistance);
+				newY = (newY -= visionDistance); break;
+		case 2: newY = (newY -= visionDistance); break;
+		case 3: newX = (newX -= visionDistance);
+				newY = (newY -= visionDistance); break;
+		case 4: newX = (newX -= visionDistance); break;
+		case 5: newX = (newX -= visionDistance);
+				newY = (newY += visionDistance); break;
+		case 6: newY = (newY += visionDistance); break;
+		case 7: newX = (newX += visionDistance); 
+				newY = (newY += visionDistance); break;
+		}
+		return new int[]{newX%w, newY%h};
+	}
+	
+	/* OLD FROM PROJECT 4 */
+	
 	private static java.util.Random rand = new java.util.Random();
 	public static int getRandomInt(int max) {
 		return rand.nextInt(max);
@@ -511,51 +605,6 @@ public abstract class Critter {
 	
 	private static void setPopulation(Critter c) {
 		population.add(c);
-	}
-	
-	/**
-	 * Looks in given direction 1 step away.
-	 * @param direction Direction to look, starts from 0 (right), goes counter-clockwise to 7.
-	 * @return toString of Critter in location, or null.
-	 */
-	protected String look (int direction) {
-		if (energy <= 0) return null;
-		int [] lookLocation = getNewCoords(direction);
-		
-		Critter c = null;
-		for (Critter cr: population) {
-			if (cr.x_coord == lookLocation[0] && cr.y_coord == lookLocation[1]) {
-				c = cr;
-				break;
-			}			
-		}
-		if (c == null) {
-			return null;
-		}
-		energy -= Params.look_energy_cost;
-		return c.toString();			
-	}
-	
-	// Returns the new co-ordinates after n steps in the given direction.
-	private int[] getNewCoords(int direction) {
-		int w = Params.world_width; int h = Params.world_height;
-		int newX = x_coord + w; int newY = y_coord + h;
-		
-		switch (direction) {
-		case 0: newX = (newX += 1); break;
-		case 1: newX = (newX += 1);
-				newY = (newY -= 1); break;
-		case 2: newY = (newY -= 1); break;
-		case 3: newX = (newX -= 1);
-				newY = (newY -= 1); break;
-		case 4: newX = (newX -= 1); break;
-		case 5: newX = (newX -= 1);
-				newY = (newY += 1); break;
-		case 6: newY = (newY += 1); break;
-		case 7: newX = (newX += 1); 
-				newY = (newY += 1); break;
-		}
-		return new int[]{newX%w, newY%h};
 	}
 
 }

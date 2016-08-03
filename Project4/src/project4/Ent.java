@@ -81,4 +81,10 @@ public class Ent extends Critter {
 		System.out.print("" + total_left / (GENE_TOTAL * 0.01 * Ents.size()) + "% left   ");
 		System.out.println();
 	}
+
+	@Override
+	public CritterShape viewShape() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

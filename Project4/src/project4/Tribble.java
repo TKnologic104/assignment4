@@ -110,4 +110,10 @@ public class Tribble extends TestCritter{
 		System.out.println();
 	}
 
+	@Override
+	public CritterShape viewShape() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

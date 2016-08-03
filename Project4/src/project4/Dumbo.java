@@ -81,4 +81,10 @@ public class Dumbo extends Critter {
 		System.out.print("" + ("0% left   "));
 		System.out.println();
 	}
+
+	@Override
+	public CritterShape viewShape() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
