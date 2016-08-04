@@ -42,7 +42,7 @@ public class Main extends Application {
 	@Override
     public void start(Stage primaryStage) {
     	primaryStage.setTitle("CRITTERS");
- //create a root which is attached to the scene. this root will then get more children attached to it
+//create a root which is attached to the scene. this root will then get more children attached to it
     	Group root = new Group();
 //create a gridpane which will include the buttons
 //the default location is the top-left corner of the window/scene
@@ -246,6 +246,7 @@ public class Main extends Application {
       		@Override
       		public void handle(ActionEvent e){
       			framesPerSec =  100.0;
+      			
       			System.out.println("rb13 framesPerSec:" + framesPerSec);
       		}
         });
@@ -261,29 +262,29 @@ public class Main extends Application {
 
 //sets the timeline for the animation to infinite    	
         timeline.setCycleCount(Timeline.INDEFINITE); 
-        double k = framesPerSec;
-        if (framesPerSec > 1.0){
-        	k = 1.0;
-        }
+//        double k = framesPerSec;
+//        if (framesPerSec > 1.0){
+//        	k = 1.0;
+//        }
 //event to handle the key frame.
 //here we will make changes to the frame after every interruption
 //the interruption is based on the time in Duration controlling how many frames to be dispplayed per sec
         KeyFrame kf = new KeyFrame(
-        		 Duration.seconds(k),                // 60 FPS
+        		 Duration.seconds(1),                // 60 FPS
                  new EventHandler<ActionEvent>(){
                      public void handle(ActionEvent ae)
                  {
                  // Clear the canvas, by painting an empty rectangle at the starting corner
                  gc.clearRect(0, 0, Params.world_width * 5, Params.world_height * 5);
                  int j = 1;
-                 if (framesPerSec > 1.0){
+  //               if (framesPerSec > 1.0){
                 	 j = (int) (framesPerSec);
-                 }
+//                 }
                  for (int i = 0; i < j; i++){
                      Critter.worldTimeStep();
                  }
                //this method will find which critters at what location and write  a string.image at that location on the canvas
-                 drawShapes(gc);
+                drawShapes(gc);
    				String str = critterStatsCombo.getValue();
    				String str2 = "project4." + str;
 //sets the text in the label with the runstats message returned   				
@@ -368,16 +369,16 @@ public class Main extends Application {
 			i = Integer.parseInt(str);
 		}
 		 catch(NumberFormatException er) {
-		    	alert.setTitle("ERROR");
-		    	alert.setContentText("Invalid Number");
-		    	alert.showAndWait();
-			 return 0;
+	    	alert.setTitle("ERROR");
+	    	alert.setContentText("Invalid Number");
+	    	alert.showAndWait();
+			return 0;
 		}
 		if (i < 1){
 	    	alert.setTitle("ERROR");
 	    	alert.setContentText("Invalid Number");
 	    	alert.showAndWait();
-			 return 0;
+			return 0;
 		}
 		return i;
 	}
