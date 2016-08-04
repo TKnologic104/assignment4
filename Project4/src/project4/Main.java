@@ -48,7 +48,7 @@ public class Main extends Application {
 //the default location is the top-left corner of the window/scene
     	GridPane grid = new GridPane();
 //sets the columns width of desired nunmber of pixels
-    	grid.getColumnConstraints().add(new ColumnConstraints(55)); //the 0th columns
+    	grid.getColumnConstraints().add(new ColumnConstraints(75)); //the 0th columns
     	grid.getColumnConstraints().add(new ColumnConstraints(80)); //the first column
     	grid.getColumnConstraints().add(new ColumnConstraints(50)); //the second column
     	grid.setPadding(new Insets(10, 10, 10, 10)); //create a padding around the grid
