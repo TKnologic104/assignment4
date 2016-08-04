@@ -49,8 +49,8 @@ public class Main extends Application {
     	GridPane grid = new GridPane();
 //sets the columns width of desired nunmber of pixels
     	grid.getColumnConstraints().add(new ColumnConstraints(75)); //the 0th columns
-    	grid.getColumnConstraints().add(new ColumnConstraints(80)); //the first column
-    	grid.getColumnConstraints().add(new ColumnConstraints(50)); //the second column
+    	grid.getColumnConstraints().add(new ColumnConstraints(120)); //the first column
+    	grid.getColumnConstraints().add(new ColumnConstraints(60)); //the second column
     	grid.setPadding(new Insets(10, 10, 10, 10)); //create a padding around the grid
     	grid.setVgap(5); //5 pixel gap between columns on the grid
     	grid.setHgap(5); //5 pixel gap between the rows on the grid
