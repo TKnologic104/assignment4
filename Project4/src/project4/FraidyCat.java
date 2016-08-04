@@ -91,4 +91,24 @@ public class FraidyCat extends Critter{
 		System.out.print("" + total_left / (GENE_TOTAL * 0.01 * FraidyCats.size()) + "% left   ");
 		System.out.println();
 	}
+	
+	public static String runStatsString(java.util.List<Critter> FraidyCats) {
+		int total_straight = 0;
+		int total_left = 0;
+		int total_right = 0;
+		int total_back = 0;
+		for (Object obj : FraidyCats) {
+			FraidyCat c = (FraidyCat) obj;
+			total_straight += c.genes[0];
+			total_right += c.genes[1] + c.genes[2] + c.genes[3];
+			total_back += c.genes[4];
+			total_left += c.genes[5] + c.genes[6] + c.genes[7];
+		}
+		String str = FraidyCats.size() + " total FraidyCats    ";
+		str = str + total_straight / (GENE_TOTAL * 0.01 * FraidyCats.size()) + "% straight   ";
+		str = str + total_back / (GENE_TOTAL * 0.01 * FraidyCats.size()) + "% back   ";
+		str = str + total_right / (GENE_TOTAL * 0.01 * FraidyCats.size()) + "% right   ";
+		str = str + total_left / (GENE_TOTAL * 0.01 * FraidyCats.size()) + "% left   ";
+		return str;
+	}
 }
