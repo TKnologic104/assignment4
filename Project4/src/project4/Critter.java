@@ -124,7 +124,7 @@ public abstract class Critter {
 	public String toString() { return ""; }
 	
 	private int energy = 0;
-	protected int getEnergy() { return energy; }
+	protected int getEnergy() { return this.energy; }
 	private void setEnergy(int energy) { this.energy = energy; }
 	
 	private int x_coord;
@@ -549,8 +549,8 @@ public abstract class Critter {
 			population.add(a);
 		}
 		/* remove dead critters from population */
-		java.util.Iterator<Critter> itr = population.iterator();
-		while(itr.hasNext()){
+		java.util.Iterator<Critter> itr = population.iterator();		
+			while(itr.hasNext()){
 			Critter c = itr.next();
 			if (c.getEnergy() <= 0) {
 				itr.remove();
@@ -560,10 +560,11 @@ public abstract class Critter {
 		for (Critter c: babies) {
 			population.add(c);
 		}
+		babies.clear();
 	}
 
 	
-	public static void displayWorldOld(GraphicsContext gc) {
+/*	public static void displayWorldOld(GraphicsContext gc) {
 		gc.setFont(new Font(Main.STYLESHEET_CASPIAN,5));
 		for (int i = 1; i <= Params.world_height;i++){
 			for (int j = 1; j <= Params.world_width;j++){
@@ -597,20 +598,20 @@ public abstract class Critter {
 			}
 		}
 
-	}
+	} */
 	
 	public static void displayWorld(Canvas canvas,Label lb, String str) {
-		//adds the facility to be able to add graphic contents to the canvas, via the gc
-		//later we will use gc. commands to add text and graphics
+			//adds the facility to be able to add graphic contents to the canvas, via the gc
+			//later we will use gc. commands to add text and graphics
 	    	GraphicsContext gc = canvas.getGraphicsContext2D();
-	        // Clear the canvas, by painting an empty rectangle at the starting corner
-	        gc.clearRect(0, 0, Params.world_width * 5, Params.world_height * 5);
+	    	// Clear the canvas, by painting an empty rectangle at the starting corner
+	        gc.clearRect(0, 0, Params.world_width * Params.pixel_scale, Params.world_height * Params.pixel_scale);
 	 		 gc.setFill(Color.WHITE);
-	        gc.fillRect(0, 0, Params.world_width * 5, Params.world_height * 5);
-	      //this method will find which critters at what location and write  a string.image at that location on the canvas
+	        gc.fillRect(0, 0, Params.world_width * Params.pixel_scale, Params.world_height * Params.pixel_scale);
+	        //this method will find which critters at what location and write  a string.image at that location on the canvas
 	        drawShapes(gc);
 				String str2 = "project4." + str;
-	//sets the text in the label with the runstats message returned   				
+			//sets the text in the label with the runstats message returned   				
 				try {
 					if (str.equals("Critter")){
 						lb.setText(  Critter.runStatsString(Critter.getInstances(str2)));
@@ -628,7 +629,7 @@ public abstract class Critter {
 						lb.setText(  Tribble.runStatsString(Critter.getInstances(str2)));
 					}
 			} 	catch (InvalidCritterException e1) {
-	//this create a pop up window to display . it could have been error, warning or information box
+			//this create a pop up window to display . it could have been error, warning or information box
 				Alert alert = new Alert(AlertType.ERROR);
 		    	alert.setTitle("ERROR");
 		    	alert.setContentText("Invalid Critter Name");
@@ -664,8 +665,8 @@ public abstract class Critter {
 							}
 							if (str.equals("DIAMOND")){
 							    //polygon.getPoints().addAll(10d,10d,20d,5d,40d,10d,20d,15d);
-								 gc.fillPolygon(new double[]{j*p,j*p+q/2,j*p+q,j*p+q/2},
-				                       		new double[]{i*p+q,i*p,i*p+q,i*p+(q*2)}, 
+								 gc.fillPolygon(new double[]{j*p,j*p+q/4,j*p+q,j*p+q/4},
+				                       		new double[]{i*p+q,i*p,i*p+q,i*p+(q*1.25)}, 
 				                       		4);
 							}
 							if (str.equals("STAR")){
@@ -680,15 +681,14 @@ public abstract class Critter {
 			}
 		}
 	
-	//IS IT OK TO DO THIS? CAN WE ADD A PUBLIC MEDTHOD HERE? IT IS USED FOR OUR RESET BUTTON
-		public static void reset(){
+
+	public static void reset(){
 			getPopulation().clear();
 		}
 
 	private static List<Critter> getPopulation() {
 		return population;
 	}
-	
 	private static void setPopulation(Critter c) {
 		population.add(c);
 	}

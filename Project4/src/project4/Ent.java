@@ -109,11 +109,11 @@ public class Ent extends Critter {
 	
 	@Override 
 	public javafx.scene.paint.Color viewOutlineColor() { 
-		return javafx.scene.paint.Color.GREEN; 
+		return javafx.scene.paint.Color.ORANGE; 
 		}
 
 	@Override 
 	public javafx.scene.paint.Color viewFillColor() { 
-		return javafx.scene.paint.Color.GREEN; 
+		return javafx.scene.paint.Color.ORANGE; 
 		}
 }

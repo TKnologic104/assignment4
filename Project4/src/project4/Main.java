@@ -31,6 +31,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+@SuppressWarnings("unused")
 public class Main extends Application {
 
 //controls the animation speed - how many frames to be displayed in seconds
@@ -261,7 +262,7 @@ public class Main extends Application {
      			timeline.pause();
      			GraphicsContext gc = canvas.getGraphicsContext2D();
     	        // Clear the canvas, by painting an empty rectangle at the starting corner
-    	        gc.clearRect(0, 0, Params.world_width * 5, Params.world_height * 5);
+    	        gc.clearRect(0, 0, Params.world_width * Params.pixel_scale, Params.world_height * Params.pixel_scale);
      		}
      	});
     	
