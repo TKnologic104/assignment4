@@ -16,6 +16,14 @@ import java.util.List;
 
 import javax.swing.text.html.HTMLDocument.Iterator;
 
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+
 /* see the PDF for descriptions of the methods and fields in this class
  * you may add fields, methods or inner classes to Critter ONLY if you make your additions private
  * no new public, protected or default-package code or data can be added to Critter
@@ -23,6 +31,9 @@ import javax.swing.text.html.HTMLDocument.Iterator;
 
 public abstract class Critter {
 	/* NEW FOR PROJECT 5 */ 
+	static final int p = 5; //number of pixels for each coordinate in the game
+	static final int q = 5; //number of pixels in a row for each critter shape
+
 	public enum CritterShape { CIRCLE, SQUARE, TRIANGLE, DIAMOND, STAR
 	} 
 	/* the default color is white, which I hope makes critters invisible by default
@@ -478,9 +489,86 @@ public abstract class Critter {
 	}
 
 	
-	public static void displayWorld() {
-		ViewController.launch(ViewController.class);
-	}
+	public static void displayWorld(Canvas canvas,Label lb, String str) {
+		//adds the facility to be able to add graphic contents to the canvas, via the gc
+		//later we will use gc. commands to add text and graphics
+	    	GraphicsContext gc = canvas.getGraphicsContext2D();
+	        // Clear the canvas, by painting an empty rectangle at the starting corner
+	        gc.clearRect(0, 0, Params.world_width * 5, Params.world_height * 5);
+	 		 gc.setFill(Color.WHITE);
+	        gc.fillRect(0, 0, Params.world_width * 5, Params.world_height * 5);
+	      //this method will find which critters at what location and write  a string.image at that location on the canvas
+	        drawShapes(gc);
+				String str2 = "project5." + str;
+	//sets the text in the label with the runstats message returned   				
+				try {
+					if (str.equals("Critter")){
+						lb.setText(  Critter.runStatsString(Critter.getInstances(str2)));
+					}
+					if (str.equals("Dumbo")){
+						lb.setText(  Dumbo.runStatsString(Critter.getInstances(str2)));
+					}
+					if (str.equals("Ent")){
+						lb.setText(  Ent.runStatsString(Critter.getInstances(str2)));
+					}
+					if (str.equals("FraidyCat")){
+						lb.setText(  FraidyCat.runStatsString(Critter.getInstances(str2)));
+					}
+					if (str.equals("Tribble")){
+						lb.setText(  Tribble.runStatsString(Critter.getInstances(str2)));
+					}
+			} 	catch (InvalidCritterException e1) {
+	//this create a pop up window to display . it could have been error, warning or information box
+				Alert alert = new Alert(AlertType.ERROR);
+		    	alert.setTitle("ERROR");
+		    	alert.setContentText("Invalid Critter Name");
+		    	alert.showAndWait();
+				}
+			
+		}
+		
+	private static void drawShapes(GraphicsContext gc) {
+//		gc.setFont(new Font(STYLESHEET_CASPIAN,5));
+			for (int i = 1; i <= Params.world_height;i++){
+				for (int j = 1; j <= Params.world_width;j++){
+					for (int k = 0; k < Critter.getPopulation().size(); k++){
+						if (((Critter.getPopulation().get(k)).getX_coord() == j) && ((Critter.getPopulation().get(k)).getY_coord() == i)){ 
+							gc.setFill(Critter.getPopulation().get(k).viewFillColor());
+//trying to experiment with images instead of the string
+//							Image img = new Image(getClass().getResourceAsStream("Dumbo.jpg"));
+//							Image img = new Image("Beetle.png");
+//							gc.drawImage(img, 10 + j * 5, i * 5, 5, 5);
+							String str = Critter.getPopulation().get(k).viewShape().toString();
+							if (str.equals("CIRCLE")){
+								gc.fillOval(j * p, i * p, q/2,q/2);
+							}
+							if (str.equals("SQUARE")){
+								gc.fillRect(j * p, i * p, q, q);
+							}
+							if (str.equals("TRIANGLE")){
+								 gc.fillPolygon(new double[]{j*p,j*p+q/2,j*p+q},
+					                       		new double[]{i*p+q,i*p,i*p+q}, 
+					                       		3);
+							}
+							if (str.equals("DIAMOND")){
+								 gc.fillPolygon(new double[]{j*p,j*p+q/2,j*p+q/2,j*p+q},
+				                       		new double[]{i*p+q/2,i*p,i*p+q,i*p+q/2}, 
+				                       		4);
+							}
+							if (str.equals("STAR")){
+								 gc.fillPolygon(new double[]{j*p,j*p+q/2,j*p+q},
+				                       		new double[]{i*p+3*q/4,i*p,i*p+3*q/4}, 
+				                       		3);
+								 gc.fillPolygon(new double[]{j*p,j*p+q/2,j*p+q},
+				                       		new double[]{i*p+1*q/4,i*p+p,i*p+1*q/4}, 
+				                       		3);
+							}
+							break;
+						}
+					}
+				}
+			}
+		}
 	
 	public static void displayWorldOld() {
 		//fills whole grid with " ".
