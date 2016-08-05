@@ -665,8 +665,8 @@ public abstract class Critter {
 							}
 							if (str.equals("DIAMOND")){
 							    //polygon.getPoints().addAll(10d,10d,20d,5d,40d,10d,20d,15d);
-								 gc.fillPolygon(new double[]{j*p,j*p+q/4,j*p+q,j*p+q/4},
-				                       		new double[]{i*p+q,i*p,i*p+q,i*p+(q*1.25)}, 
+								 gc.fillPolygon(new double[]{j*p,j*p+q/2,j*p+q,j*p+q/2},
+				                       		new double[]{i*p+q*.5,(i*p),i*p+q*.5,i*p+(q*1.0)}, 
 				                       		4);
 							}
 							if (str.equals("STAR")){
