@@ -14,13 +14,15 @@ package project4;
 
 import java.util.List;
 
-/* see the PDF for descriptions of the methods and fields in this class
- * you may add fields, methods or inner classes to Critter ONLY if you make your additions private
- * no new public, protected or default-package code or data can be added to Critter
- */
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.application.Application;
+
 public abstract class Critter {
 
 	/* NEW FOR PROJECT 5 */
+	//***********************
 	public enum CritterShape {
 		CIRCLE,
 		SQUARE,
@@ -43,17 +45,10 @@ public abstract class Critter {
 	public javafx.scene.paint.Color viewColor() { 
 		return javafx.scene.paint.Color.WHITE; 
 	}
-	
 	public javafx.scene.paint.Color viewOutlineColor() { return viewColor(); }
 	public javafx.scene.paint.Color viewFillColor() { return viewColor(); }
-	
 	public abstract CritterShape viewShape(); 
 	
-	/**
-	 * Looks in given direction 1 step away.
-	 * @param direction Direction to look, starts from 0 (right), goes counter-clockwise to 7.
-	 * @return toString of Critter in location, or null.
-	 */
 	protected String look (int direction) {
 		if (energy <= 0) return null;
 		int [] lookLocation = getNewCoords(direction, 1);
@@ -71,7 +66,6 @@ public abstract class Critter {
 		energy -= Params.look_energy_cost;
 		return c.toString();			
 	}
-	
 	protected String look2 (int direction) {
 		if (energy <= 0) return null;
 		int [] lookLocation = getNewCoords(direction, 2);
@@ -89,7 +83,6 @@ public abstract class Critter {
 		energy -= Params.look_energy_cost;
 		return c.toString();			
 	}
-	// Returns the new co-ordinates after n steps in the given direction.
 	private int[] getNewCoords(int direction, int visionDistance) {
 		int w = Params.world_width; int h = Params.world_height;
 		int newX = x_coord + w; int newY = y_coord + h;
@@ -112,28 +105,30 @@ public abstract class Critter {
 	}
 	
 	/* OLD FROM PROJECT 4 */
-	
+	//***********************
 	private static java.util.Random rand = new java.util.Random();
 	public static int getRandomInt(int max) {
 		return rand.nextInt(max);
 	}
-	
 	public static void setSeed(long new_seed) {
 		rand = new java.util.Random(new_seed);
 	}
 	
-	
-	/* a one-character long string that visually depicts your critter in the ASCII interface */
 	public String toString() { return ""; }
 	
 	private int energy = 0;
 	protected int getEnergy() { return energy; }
-	
-	/* added */
 	private void setEnergy(int energy) { this.energy = energy; }
 	
 	private int x_coord;
 	private int y_coord;
+	private double getX_coord() {
+		return this.x_coord;
+	}
+	private double getY_coord() {
+		return this.y_coord;
+	}
+
 	private boolean hasMoved;
 	private boolean inFight;
 	
@@ -144,7 +139,6 @@ public abstract class Critter {
 		}
 		move(direction, 1, Params.walk_energy_cost);
 	}
-	
 	protected final void run(int direction) {
 		if (hasMoved == true) {
 			energy -= Params.run_energy_cost;
@@ -152,8 +146,6 @@ public abstract class Critter {
 		}
 		move(direction, 2, Params.run_energy_cost);
 	}
-
-	
 	private void move(int direction, int speed, int cost) {
 		this.energy -= cost;
 		if (this.energy <= 0) {
@@ -284,6 +276,7 @@ public abstract class Critter {
 	
 	}
 	
+	public abstract boolean fight(String oponent);
 	private static void resolveEncounter(Critter a, Critter b) {
 		if (a.getEnergy() <= 0 || b.getEnergy() <= 0) {
 			return;
@@ -319,12 +312,7 @@ public abstract class Critter {
 	}
 
 	public abstract void doTimeStep();
-	public abstract boolean fight(String oponent);
 	
-	/* create and initialize a Critter subclass
-	 * critter_class_name must be the name of a concrete subclass of Critter, if not
-	 * an InvalidCritterException must be thrown
-	 */
 	public static void makeCritter(String critter_class_name) throws InvalidCritterException{
 		Class<?> cls = null;
 		try {
@@ -396,8 +384,6 @@ public abstract class Critter {
 		return result;
 	}
 	
-		
-	
 	public static void runStats(List<Critter> critters) {
 		System.out.print("" + critters.size() + " critters as follows -- ");
 		java.util.Map<String, Integer> critter_count = new java.util.HashMap<String, Integer>();
@@ -417,7 +403,6 @@ public abstract class Critter {
 		}
 		System.out.println();		
 	}
-	
 	public static String runStatsString(List<Critter> critters) {
 		String str = "" + critters.size() + " critters -> ";
 		java.util.Map<String, Integer> critter_count = new java.util.HashMap<String, Integer>();
@@ -529,9 +514,6 @@ public abstract class Critter {
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();	
 	
-	/**
-	 * runs "doTimeStep" of each critter "k" in the population. 
-	 */
 	public static void worldTimeStep() {
 		/* move and reproduce (but don't add babies to population) */
 		for (Critter c: population) {
@@ -574,47 +556,38 @@ public abstract class Critter {
 	}
 
 	
-	public static void displayWorld() {
-		//fills whole grid with " ".
-		String[][] out = new String[Params.world_height + 2][Params.world_width + 2]; // adds room for border.
-		for (int i = 0; i <= Params.world_height + 1;i++){
-			for (int j = 0; j <= Params.world_width + 1;j++){
-			out[i][j] = " ";
-			}
-		}
-		//sets corners to "+"
-		out[0][0] = "+";
-		out[Params.world_height + 1][0] = "+";
-		out[0][Params.world_width + 1] = "+";
-		out[Params.world_height + 1][Params.world_width + 1] = "+";
-		//makes first and last row "-" 		
-		for (int i = 1; i <= Params.world_width;i++){
-			out[0][i] = "-";
-			out[Params.world_height + 1][i] = "-";
-		}
-		//makes first and last column "|"		
-		for (int i = 1; i <= Params.world_height;i++){
-			out[i][0] = "|";
-			out[i][Params.world_width + 1] = "|";
-		}
-		//places critters in population on board using their toString return characters
-		//limits the placement to the playable area.
+	public static void displayWorld(GraphicsContext gc) {
+		gc.setFont(new Font(Main.STYLESHEET_CASPIAN,5));
 		for (int i = 1; i <= Params.world_height;i++){
 			for (int j = 1; j <= Params.world_width;j++){
-				for (int k = 0; k < getPopulation().size(); k++){
-					if (((getPopulation().get(k)).x_coord == j) && ((getPopulation().get(k)).y_coord == i)){ 
-						out[i][j] = getPopulation().get(k).toString();
+				for (int k = 0; k < Critter.getPopulation().size(); k++){
+					if (((Critter.getPopulation().get(k)).getX_coord() == j) && ((Critter.getPopulation().get(k)).getY_coord() == i)){ 
+						gc.setFill(Color.GREEN);
+						String str = Critter.getPopulation().get(k).getClass().toString();
+						str = str.trim();
+						if (str.equals("class project4.Dumbo")){
+							gc.setFill(Color.RED);
+						}
+						if (str.equals("class project4.Ent")){
+							gc.setFill(Color.BLUE);
+						}
+						if (str.equals("class project4.FraidyCat")){
+							gc.setFill(Color.BLACK);
+						}
+						if (str.equals("class project4.Tribble")){
+							gc.setFill(Color.ORANGE);
+						}
+						String str2 = Critter.getPopulation().get(k).toString();
+//trying to experiment with images instead of the string
+//						Image img = new Image(getClass().getResourceAsStream("Dumbo.jpg"));
+//						Image img = new Image("Beetle.png");
+//						gc.drawImage(img, 10 + j * 5, i * 5, 5, 5);
+						gc.fillText(str2, j * 5, i * 5);
+//						gc.fillRect(Params.world_width + j * 5, i * 5, 5, 5);
 						break;
 					}
 				}
 			}
-		}
-		//prints out the board
-		for (int i = 0; i <= Params.world_height + 1;i++){
-			for (int j = 0; j <= Params.world_width + 1;j++){
-				System.out.print(out[i][j]);
-			}
-			System.out.println();
 		}
 
 	}

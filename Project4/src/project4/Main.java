@@ -324,38 +324,7 @@ public class Main extends Application {
     }
 
     private void drawShapes(GraphicsContext gc) {
-		gc.setFont(new Font(STYLESHEET_CASPIAN,5));
-		for (int i = 1; i <= Params.world_height;i++){
-			for (int j = 1; j <= Params.world_width;j++){
-				for (int k = 0; k < Critter.getPopulation().size(); k++){
-					if (((Critter.getPopulation().get(k)).getX_coord() == j) && ((Critter.getPopulation().get(k)).getY_coord() == i)){ 
-						gc.setFill(Color.GREEN);
-						String str = Critter.getPopulation().get(k).getClass().toString();
-						str = str.trim();
-						if (str.equals("class project4.Dumbo")){
-							gc.setFill(Color.RED);
-						}
-						if (str.equals("class project4.Ent")){
-							gc.setFill(Color.BLUE);
-						}
-						if (str.equals("class project4.FraidyCat")){
-							gc.setFill(Color.BLACK);
-						}
-						if (str.equals("class project4.Tribble")){
-							gc.setFill(Color.ORANGE);
-						}
-						String str2 = Critter.getPopulation().get(k).toString();
-//trying to experiment with images instead of the string
-//						Image img = new Image(getClass().getResourceAsStream("Dumbo.jpg"));
-//						Image img = new Image("Beetle.png");
-//						gc.drawImage(img, 10 + j * 5, i * 5, 5, 5);
-						gc.fillText(str2, j * 5, i * 5);
-//						gc.fillRect(Params.world_width + j * 5, i * 5, 5, 5);
-						break;
-					}
-				}
-			}
-		}
+    	Critter.displayWorld(gc);
 	}
 
     public static int getNumber(String str){
