@@ -46,7 +46,9 @@ public class Tribble extends TestCritter{
 			if (getEnergy() - Params.walk_energy_cost > 0)
 				walk(emptyDir);
 		}
-		
+		else {
+			walk(dir);
+		}
 		int roll = Critter.getRandomInt(GENE_TOTAL);
 		int turn = 0;
 		while (genes[turn] <= roll) {
