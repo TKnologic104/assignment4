@@ -41,6 +41,7 @@ public class Tribble extends TestCritter{
 			int babyDirection = emptyDir < 0 ? 0: emptyDir;
 			if (getEnergy() - Params.min_reproduce_energy > 0)
 				reproduce(c, babyDirection);
+				run(dir);
 		} else if (emptyDir >= 0) {
 			if (getEnergy() - Params.walk_energy_cost > 0)
 				walk(emptyDir);
