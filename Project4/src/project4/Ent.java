@@ -82,9 +82,38 @@ public class Ent extends Critter {
 		System.out.println();
 	}
 
-	@Override
-	public CritterShape viewShape() {
-		// TODO Auto-generated method stub
-		return null;
+	public static String runStatsString(java.util.List<Critter> Ents) {
+		int total_straight = 0;
+		int total_left = 0;
+		int total_right = 0;
+		int total_back = 0;
+		for (Object obj : Ents) {
+			Ent c = (Ent) obj;
+			total_straight += c.genes[0];
+			total_right += c.genes[1] + c.genes[2] + c.genes[3];
+			total_back += c.genes[4];
+			total_left += c.genes[5] + c.genes[6] + c.genes[7];
+		}
+		String str = Ents.size() + " total Ent's    ";
+		str = str + total_straight / (GENE_TOTAL * 0.01 * Ents.size()) + "% straight   ";
+		str = str + total_back / (GENE_TOTAL * 0.01 * Ents.size()) + "% back   ";
+		str = str + total_right / (GENE_TOTAL * 0.01 * Ents.size()) + "% right   ";
+		str = str + total_left / (GENE_TOTAL * 0.01 * Ents.size()) + "% left   ";
+		return str;
 	}
+
+	@Override 
+	public CritterShape viewShape() { 
+		return CritterShape.TRIANGLE; 
+	}
+	
+	@Override 
+	public javafx.scene.paint.Color viewOutlineColor() { 
+		return javafx.scene.paint.Color.GREEN; 
+		}
+
+	@Override 
+	public javafx.scene.paint.Color viewFillColor() { 
+		return javafx.scene.paint.Color.GREEN; 
+		}
 }

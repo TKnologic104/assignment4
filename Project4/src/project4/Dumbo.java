@@ -82,9 +82,38 @@ public class Dumbo extends Critter {
 		System.out.println();
 	}
 
-	@Override
-	public CritterShape viewShape() {
-		// TODO Auto-generated method stub
-		return null;
+	public static String runStatsString(java.util.List<Critter> Dumbo) {
+		int total_straight = 0;
+		int total_left = 0;
+		int total_right = 0;
+		int total_back = 0;
+		for (Object obj : Dumbo) {
+			Dumbo c = (Dumbo) obj;
+			total_straight += c.genes[0];
+			total_right += c.genes[1] + c.genes[2] + c.genes[3];
+			total_back += c.genes[4];
+			total_left += c.genes[5] + c.genes[6] + c.genes[7];
+		}
+		String str = Dumbo.size() + " total Dumbo    ";
+		str = str + "100% straight   ";
+		str = str + "0% right   ";
+		str = str + "0% back   ";
+		str = str + "0% left   ";
+		return str;
+	}
+
+	@Override 
+	public CritterShape viewShape() { 
+		return CritterShape.SQUARE; 
+	}
+	
+	@Override 
+	public javafx.scene.paint.Color viewOutlineColor() { 
+		return javafx.scene.paint.Color.RED; 
+		}
+
+	@Override 
+	public javafx.scene.paint.Color viewFillColor() { 
+		return javafx.scene.paint.Color.RED; 
 	}
 }

@@ -13,5 +13,9 @@ public class Params {
 	public static int start_energy = 100;
 	
 	public static int look_energy_cost = 1;
+	
+
+	public static int pixel_scale = 5;
+	public static int icon_scale = 5;
 
 }

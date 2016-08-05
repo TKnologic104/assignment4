@@ -1,7 +1,10 @@
 package project4;
 import java.util.List;
 
+import javafx.animation.Animation;
+import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 import javafx.event.EventHandler;
@@ -30,17 +33,20 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-//controls the animation speed - how many frames to be displayed
-	double framesPerSec = 1;	 
+//controls the animation speed - how many frames to be displayed in seconds
+	int countWithout = 1;
+	int countWithoutShow = 1;
+	int numOfWorldSteps = 1;
 //will position the top-left corner of the canvas on the window
 	int startRowGame = 25;
 	int startColGame = 300;
-	public static void main(String[] args) {
-        launch(args);
-    }
+//	public static void main(String[] args) {
+//        launch(args);
+//    }
 
 	@Override
     public void start(Stage primaryStage) {
+//sets the stage
     	primaryStage.setTitle("CRITTERS");
  //create a root which is attached to the scene. this root will then get more children attached to it
     	Group root = new Group();
@@ -48,9 +54,10 @@ public class Main extends Application {
 //the default location is the top-left corner of the window/scene
     	GridPane grid = new GridPane();
 //sets the columns width of desired nunmber of pixels
-    	grid.getColumnConstraints().add(new ColumnConstraints(55)); //the 0th columns
-    	grid.getColumnConstraints().add(new ColumnConstraints(80)); //the first column
-    	grid.getColumnConstraints().add(new ColumnConstraints(50)); //the second column
+    	
+    	grid.getColumnConstraints().add(new ColumnConstraints(80)); //the 0th columns
+    	grid.getColumnConstraints().add(new ColumnConstraints(120)); //the first column
+    	grid.getColumnConstraints().add(new ColumnConstraints(75)); //the second column
     	grid.setPadding(new Insets(10, 10, 10, 10)); //create a padding around the grid
     	grid.setVgap(5); //5 pixel gap between columns on the grid
     	grid.setHgap(5); //5 pixel gap between the rows on the grid
@@ -61,26 +68,35 @@ public class Main extends Application {
     	GridPane.setConstraints(btnPause,0,0);
 //adds the button to the grid
     	grid.getChildren().add(btnPause);
+
+   
+//***************************************************************************************************//    	
+  /*** below code just creates new buttons, labels, radiobuttons etc and adds them to pane ***/
 		Button btnPlay = new Button("PLAY");
     	GridPane.setConstraints(btnPlay,1,0);
     	grid.getChildren().add(btnPlay);
-		Button btnQuit = new Button("QUIT");
+		
+      	Button btnQuit = new Button("QUIT");
     	GridPane.setConstraints(btnQuit,2,0);
     	grid.getChildren().add(btnQuit);
-		TextField num1 = new TextField();
+    	
+    	TextField num1 = new TextField();
 		num1.setMaxWidth(50);
 		num1.setText("1");
-    	GridPane.setConstraints(num1,0,1);
+ 		GridPane.setConstraints(num1,0,1);
     	grid.getChildren().add(num1);
-		Button btnSeed = new Button("SEED");
+	
+    	Button btnSeed = new Button("SEED");
     	GridPane.setConstraints(btnSeed,1,1);
     	grid.getChildren().add(btnSeed);
-		TextField num2 = new TextField();
+		
+    	TextField num2 = new TextField();
 		num2.setMaxWidth(50);
 		num2.setText("1");
     	GridPane.setConstraints(num2,0,2);
     	grid.getChildren().add(num2);
-		ComboBox<String> critterMakeCombo = new ComboBox<>();
+
+    	ComboBox<String> critterMakeCombo = new ComboBox<>();
 		critterMakeCombo.getItems().addAll(
 				"Dumbo",
 				"Ent",
@@ -90,10 +106,12 @@ public class Main extends Application {
 		critterMakeCombo.setValue("Dumbo");
     	GridPane.setConstraints(critterMakeCombo,1,2);
     	grid.getChildren().add(critterMakeCombo);
-		Button btnMake = new Button("MAKE");
+		
+    	Button btnMake = new Button("MAKE");
     	GridPane.setConstraints(btnMake,2,2);
     	grid.getChildren().add(btnMake);
-		ComboBox<String> critterStatsCombo = new ComboBox();
+		
+    	ComboBox<String> critterStatsCombo = new ComboBox<String>();
 		critterStatsCombo.getItems().addAll(
 				"Dumbo",
 				"Ent",
@@ -104,10 +122,14 @@ public class Main extends Application {
 		critterStatsCombo.setValue("Critter");
     	GridPane.setConstraints(critterStatsCombo,1,3);
     	grid.getChildren().add(critterStatsCombo);
-		Button btnStats = new Button("STATS");
+		
+    	Button btnStats = new Button("STATS");
     	GridPane.setConstraints(btnStats,2,3);
     	grid.getChildren().add(btnStats);
-	
+
+    	Label lbAnim = new Label("Animation");
+    	Label lbAnim2 = new Label("Speed");
+    	
     	RadioButton rb1 = new RadioButton("1/100");
     	RadioButton rb2 = new RadioButton("1/50");
     	RadioButton rb3 = new RadioButton("1/20");
@@ -121,21 +143,29 @@ public class Main extends Application {
 		RadioButton rb11 = new RadioButton("20");
 		RadioButton rb12 = new RadioButton("50");
 		RadioButton rb13 = new RadioButton("100");
+		
 		ToggleGroup tg = new ToggleGroup();
 		tg.getToggles().addAll(rb1, rb2, rb3, rb4, rb5, rb6, rb7, rb8, rb9, rb10, rb11, rb12, rb13);
-    	GridPane.setConstraints(rb1,0,4);
-    	GridPane.setConstraints(rb2,0,5);
-    	GridPane.setConstraints(rb3,0,6);
-    	GridPane.setConstraints(rb4,0,7);
-    	GridPane.setConstraints(rb5,0,8);
-    	GridPane.setConstraints(rb6,0,9);
-    	GridPane.setConstraints(rb7,0,10);
-    	GridPane.setConstraints(rb8,0,11);
-    	GridPane.setConstraints(rb9,0,12);
-    	GridPane.setConstraints(rb10,0,13);
-    	GridPane.setConstraints(rb11,0,14);
-    	GridPane.setConstraints(rb12,0,15);
-    	GridPane.setConstraints(rb13,0,16);
+		tg.selectToggle(rb7);
+    	
+		GridPane.setConstraints(lbAnim,0,4);
+    	GridPane.setConstraints(lbAnim2,0,5);
+    	GridPane.setConstraints(rb1,0,6);
+    	GridPane.setConstraints(rb2,0,7);
+    	GridPane.setConstraints(rb3,0,8);
+    	GridPane.setConstraints(rb4,0,9);
+    	GridPane.setConstraints(rb5,0,10);
+    	GridPane.setConstraints(rb6,0,11);
+    	GridPane.setConstraints(rb7,0,12);
+    	GridPane.setConstraints(rb8,0,13);
+    	GridPane.setConstraints(rb9,0,14);
+    	GridPane.setConstraints(rb10,0,15);
+    	GridPane.setConstraints(rb11,0,16);
+    	GridPane.setConstraints(rb12,0,17);
+    	GridPane.setConstraints(rb13,0,18);
+    	
+    	grid.getChildren().add(lbAnim);
+    	grid.getChildren().add(lbAnim2);
     	grid.getChildren().add(rb1);
     	grid.getChildren().add(rb2);
     	grid.getChildren().add(rb3);
@@ -150,7 +180,46 @@ public class Main extends Application {
     	grid.getChildren().add(rb12);
     	grid.getChildren().add(rb13);
     	
-//create a new grid to display the runstats message
+    	Label lbSteps = new Label("World Steps");
+		RadioButton rb14 = new RadioButton("1");
+		RadioButton rb15 = new RadioButton("2");
+		RadioButton rb16 = new RadioButton("5");
+		RadioButton rb17 = new RadioButton("10");
+		RadioButton rb18 = new RadioButton("20");
+		RadioButton rb19 = new RadioButton("50");
+		RadioButton rb20 = new RadioButton("100");
+		RadioButton rb21 = new RadioButton("1000");
+		RadioButton rb22 = new RadioButton("10000");
+		
+		ToggleGroup tg2 = new ToggleGroup();
+		tg2.getToggles().addAll(rb14, rb15, rb16, rb17, rb18, rb19, rb20, rb21, rb22);
+		tg2.selectToggle(rb14);
+    	
+		GridPane.setConstraints(lbSteps,1,4);
+    	GridPane.setConstraints(rb14,1,5);
+    	GridPane.setConstraints(rb15,1,6);
+    	GridPane.setConstraints(rb16,1,7);
+    	GridPane.setConstraints(rb17,1,8);
+    	GridPane.setConstraints(rb18,1,9);
+    	GridPane.setConstraints(rb19,1,10);
+    	GridPane.setConstraints(rb20,1,11);
+    	GridPane.setConstraints(rb21,1,12);
+    	GridPane.setConstraints(rb22,1,13);
+    	grid.getChildren().add(lbSteps);
+    	grid.getChildren().add(rb14);
+    	grid.getChildren().add(rb15);
+    	grid.getChildren().add(rb16);
+    	grid.getChildren().add(rb17);
+    	grid.getChildren().add(rb18);
+    	grid.getChildren().add(rb19);
+    	grid.getChildren().add(rb20);
+    	grid.getChildren().add(rb21);
+    	grid.getChildren().add(rb22);
+    	
+//********************************************************************************************//
+    	//						STATS GRID
+    	
+    	//create a new grid to display the runstats message
     	GridPane gridMsg = new GridPane();
 //instead of default position this grid to col startColGame
     	gridMsg.setLayoutX(startColGame);
@@ -161,17 +230,16 @@ public class Main extends Application {
 //add that label to the gridMsg    	
     	gridMsg.getChildren().add(lb);
 		
-//controls the animation
+//***********************************************************************************************//    	
+    	//implements the button functionality
+    	
+    	
+    	
+    	//controls the animation
     	Timeline timeline = new Timeline();
 
-//create a canvas of a size 5 times the world size.
-//the multiplication by 5 is so that we can see the critters with our eyes and they dont overlap each other
-    	Canvas canvas = new Canvas(Params.world_width * 5, Params.world_height * 5);
-//positions the canvas to col 250 and row 25 on the window
-    	canvas.setLayoutX(startColGame);
-    	canvas.setLayoutY(startRowGame);
-    	
-//below code is trap and handle the events triggered by the keyboard and mouse and animation
+ 	
+/***below code is trap and handle the events triggered by the keyboard and mouse and animation***/
      	btnPause.setOnAction(new EventHandler<ActionEvent>(){
       		@Override
       		public void handle(ActionEvent e){
@@ -185,6 +253,7 @@ public class Main extends Application {
       			timeline.play(); //plays the animation
       		}
       	});
+     	
      	btnQuit.setOnAction(new EventHandler<ActionEvent>(){
       		@Override
       		public void handle(ActionEvent e){
@@ -192,6 +261,7 @@ public class Main extends Application {
       		}
 
       	});
+     	
      	btnSeed.setOnAction(new EventHandler<ActionEvent>(){
       		@Override
       		public void handle(ActionEvent e){
@@ -202,10 +272,10 @@ public class Main extends Application {
   				}
       		}
       	});
+     	
      	btnMake.setOnAction(new EventHandler<ActionEvent>(){
       		@Override
       		public void handle(ActionEvent e){
-      			System.out.println("make");
       			try {
       				String input = num2.getText();
       				int j = getNumber(input);
@@ -215,7 +285,6 @@ public class Main extends Application {
       					Critter.makeCritter(str);
       				}
 				} catch (InvalidCritterException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
       		}
@@ -224,108 +293,195 @@ public class Main extends Application {
      	rb1.setOnAction(new EventHandler<ActionEvent>(){
       		@Override
       		public void handle(ActionEvent e){
-      			framesPerSec =  1.0/100.0;
-      			System.out.println("rb1 framesPerSec:" + framesPerSec);
+      			countWithoutShow =  100;
       		}
         });
      	rb2.setOnAction(new EventHandler<ActionEvent>(){
       		@Override
       		public void handle(ActionEvent e){
-      			framesPerSec =  1.0/50.0;
-      			System.out.println("rb2 framesPerSec:" + framesPerSec);
+      			countWithoutShow = 50;
+      		}
+        });
+     	rb3.setOnAction(new EventHandler<ActionEvent>(){
+      		@Override
+      		public void handle(ActionEvent e){
+      			countWithoutShow = 20;
+      		}
+        });
+     	rb4.setOnAction(new EventHandler<ActionEvent>(){
+      		@Override
+      		public void handle(ActionEvent e){
+      			countWithoutShow = 10;
+      		}
+        });
+     	rb5.setOnAction(new EventHandler<ActionEvent>(){
+      		@Override
+      		public void handle(ActionEvent e){
+      			countWithoutShow = 5;
+      		}
+        });
+     	rb6.setOnAction(new EventHandler<ActionEvent>(){
+      		@Override
+      		public void handle(ActionEvent e){
+      			countWithoutShow = 2;
+      		}
+        });
+     	rb7.setOnAction(new EventHandler<ActionEvent>(){
+      		@Override
+      		public void handle(ActionEvent e){
+      			countWithoutShow = 1;
+      		}
+        });
+     	rb8.setOnAction(new EventHandler<ActionEvent>(){
+      		@Override
+      		public void handle(ActionEvent e){
+      			countWithoutShow = -2;
+      			timeline.setRate(2.0);
+      		}
+        });
+     	rb9.setOnAction(new EventHandler<ActionEvent>(){
+      		@Override
+      		public void handle(ActionEvent e){
+      			countWithoutShow = -5;
+      			timeline.setRate(5.0);
+      		}
+        });
+     	rb10.setOnAction(new EventHandler<ActionEvent>(){
+      		@Override
+      		public void handle(ActionEvent e){
+      			countWithoutShow = -10;
+      			timeline.setRate(10.0);
+      		}
+        });
+     	rb11.setOnAction(new EventHandler<ActionEvent>(){
+      		@Override
+      		public void handle(ActionEvent e){
+      			countWithoutShow = -20;
+      			timeline.setRate(20.0);
       		}
         });
     	rb12.setOnAction(new EventHandler<ActionEvent>(){
       		@Override
       		public void handle(ActionEvent e){
-      			framesPerSec =  50.0;
-      			System.out.println("rb12 framesPerSec:" + framesPerSec);
+      			countWithoutShow = -50;
+      			timeline.setRate(50.0);
+
       		}
         });
     	rb13.setOnAction(new EventHandler<ActionEvent>(){
       		@Override
       		public void handle(ActionEvent e){
-      			framesPerSec =  100.0;
-      			System.out.println("rb13 framesPerSec:" + framesPerSec);
+      			countWithoutShow = -100;
+      			timeline.setRate(100.0);
       		}
         });
-//adds the grid, canvas and gridMsg to the root
+
+    	rb18.setOnAction(new EventHandler<ActionEvent>(){
+      		@Override
+      		public void handle(ActionEvent e){
+      			numOfWorldSteps = 20;
+      		}
+        });
+    	rb19.setOnAction(new EventHandler<ActionEvent>(){
+      		@Override
+      		public void handle(ActionEvent e){
+      			numOfWorldSteps = 50;
+      		}
+        });
+    	rb20.setOnAction(new EventHandler<ActionEvent>(){
+      		@Override
+      		public void handle(ActionEvent e){
+      			numOfWorldSteps = 100;
+      		}
+        });
+    	rb21.setOnAction(new EventHandler<ActionEvent>(){
+      		@Override
+      		public void handle(ActionEvent e){
+      			numOfWorldSteps = 1000;
+      		}
+        });
+    	rb22.setOnAction(new EventHandler<ActionEvent>(){
+      		@Override
+      		public void handle(ActionEvent e){
+      			numOfWorldSteps = 10000;
+      		}
+        });
+//***************************************************************************************************
+    			//Creating Canvas//
+    	
+    	//create a canvas of a size 5 times the world size.
+    	//the multiplication by 5 is so that we can see the critters with our eyes and they dont overlap each other
+    	    	Canvas canvas = new Canvas(Params.world_width * Params.pixel_scale, Params.world_height * Params.pixel_scale);
+    	//positions the canvas to col 250 and row 25 on the window
+    	    	canvas.setLayoutX(startColGame);
+    	    	canvas.setLayoutY(startRowGame);
+    	    	
+//*************************************************************************************************** 
+    	    	//adding Nodes to Root & Scene
+    	    	
+    	//adds the grid, canvas and gridMsg to the root
         root.getChildren().add(grid);
         root.getChildren().add(canvas);
         root.getChildren().add(gridMsg);
-//adds the root to the scene and the scene to the stage
+        //adds the root to the scene and the scene to the stage
     	primaryStage.setScene(new Scene(root));
-//adds the facility to be able to add graphic contents to the canvas, via the gc
-//later we will use gc. commands to add text and graphics
-    	GraphicsContext gc = canvas.getGraphicsContext2D();
 
-//sets the timeline for the animation to infinite    	
+    	//sets the time line for the animation to infinite    	
         timeline.setCycleCount(Timeline.INDEFINITE); 
-        double k = framesPerSec;
-        if (framesPerSec > 1.0){
-        	k = 1.0;
-        }
-//event to handle the key frame.
-//here we will make changes to the frame after every interruption
-//the interruption is based on the time in Duration controlling how many frames to be dispplayed per sec
-        KeyFrame kf = new KeyFrame(
-        		 Duration.seconds(k),                // 60 FPS
-                 new EventHandler<ActionEvent>(){
-                     public void handle(ActionEvent ae)
-                 {
-                 // Clear the canvas, by painting an empty rectangle at the starting corner
-                 gc.clearRect(0, 0, Params.world_width * 5, Params.world_height * 5);
-                 int j = 1;
-                 if (framesPerSec > 1.0){
-                	 j = (int) (framesPerSec);
-                 }
-                 for (int i = 0; i < j; i++){
-                     Critter.worldTimeStep();
-                 }
-               //this method will find which critters at what location and write  a string.image at that location on the canvas
-                 drawShapes(gc);
-   				String str = critterStatsCombo.getValue();
-   				String str2 = "project4." + str;
-//sets the text in the label with the runstats message returned   				
-   				try {
-   					if (str.equals("Critter")){
-   						lb.setText(  Critter.runStatsString(Critter.getInstances(str2)));
-   					}
-   					if (str.equals("Dumbo")){
-   						lb.setText(  Dumbo.runStatsString(Critter.getInstances(str2)));
-   					}
-   					if (str.equals("Ent")){
-   						lb.setText(  Ent.runStatsString(Critter.getInstances(str2)));
-   					}
-   					if (str.equals("FraidyCat")){
-   						lb.setText(  FraidyCat.runStatsString(Critter.getInstances(str2)));
-   					}
-   					if (str.equals("Tribble")){
-   						lb.setText(  Tribble.runStatsString(Critter.getInstances(str2)));
-   					}
- 				} 	catch (InvalidCritterException e1) {
-//this create a pop up window to display . it could have been error, warning or information box
- 					Alert alert = new Alert(AlertType.ERROR);
- 			    	alert.setTitle("ERROR");
- 			    	alert.setContentText("Invalid Critter Name");
- 			    	alert.showAndWait();
- 					}
- 				
+
+        Duration duration = Duration.seconds(0.5);
+        
+        
+        countWithout = countWithoutShow;
+            
+        EventHandler<ActionEvent> endEvent = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+                timeline.pause();       
+
+                //MANUAL DELAY
+            	if (countWithout > 1){
+            		countWithout--;
+            	}
+            	
+            	else {
+            		countWithout = countWithoutShow;
+
+            		for (int i = 0; i < numOfWorldSteps; i++){
+            			Critter.worldTimeStep();
+            		}
+                	Critter.displayWorld(canvas,lb,critterStatsCombo.getValue());
                 }
-             }
-        );
-		            
+                timeline.play();       
+            }
+        };
+
+        KeyFrame kf2 = new KeyFrame(duration, endEvent);
+        timeline.getKeyFrames().addAll(kf2);
+
+/* WORKS
+        Duration duration = Duration.seconds(framesPerSec);
+        EventHandler onFinished = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+                Duration duration = Duration.seconds(framesPerSec);
+                for (int i = 0; i < numOfWorldSteps; i++){
+                    Critter.worldTimeStep();
+                }
+              	 animate(gc,lb,critterStatsCombo.getValue());
+            }
+        };
+        KeyFrame kf = new KeyFrame(duration, onFinished);
 //adds the keyframe to the timline. multiple time frames could ahve been added
         timeline.getKeyFrames().add(kf);
+*/
+
+        
         timeline.play();       
-//shows the stage on the computer screen
+
+
+        //shows the stage on the computer screen
         primaryStage.show();
 //      primaryStage.close();
     }
-
-    private void drawShapes(GraphicsContext gc) {
-    	Critter.displayWorld(gc);
-	}
 
     public static int getNumber(String str){
     	Alert alert = new Alert(AlertType.ERROR);
