@@ -682,6 +682,10 @@ public abstract class Critter {
 			}
 		}
 	
+	//IS IT OK TO DO THIS? CAN WE ADD A PUBLIC MEDTHOD HERE? IT IS USED FOR OUR RESET BUTTON
+		public static void reset(){
+			getPopulation().clear();
+		}
 
 	private static List<Critter> getPopulation() {
 		return population;

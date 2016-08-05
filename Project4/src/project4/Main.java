@@ -69,10 +69,24 @@ public class Main extends Application {
 //adds the button to the grid
     	grid.getChildren().add(btnPause);
 
-   
+//***************************************************************************************************
+		//Creating Canvas//
+
+//create a canvas of a size 5 times the world size.
+//the multiplication by 5 is so that we can see the critters with our eyes and they dont overlap each other
+    	Canvas canvas = new Canvas(Params.world_width * Params.pixel_scale, Params.world_height * Params.pixel_scale);
+//positions the canvas to col 250 and row 25 on the window
+    	canvas.setLayoutX(startColGame);
+    	canvas.setLayoutY(startRowGame);
+    	
+    	   
 //***************************************************************************************************//    	
   /*** below code just creates new buttons, labels, radiobuttons etc and adds them to pane ***/
-		Button btnPlay = new Button("PLAY");
+		Button btnReset = new Button("RESET");
+    	GridPane.setConstraints(btnReset,2,1);
+    	grid.getChildren().add(btnReset);
+    	
+    	Button btnPlay = new Button("PLAY");
     	GridPane.setConstraints(btnPlay,1,0);
     	grid.getChildren().add(btnPlay);
 		
@@ -240,7 +254,18 @@ public class Main extends Application {
 
  	
 /***below code is trap and handle the events triggered by the keyboard and mouse and animation***/
-     	btnPause.setOnAction(new EventHandler<ActionEvent>(){
+     	btnReset.setOnAction(new EventHandler<ActionEvent>(){
+     		@Override
+     		public void handle(ActionEvent e){
+     			Critter.reset();
+     			timeline.pause();
+     			GraphicsContext gc = canvas.getGraphicsContext2D();
+    	        // Clear the canvas, by painting an empty rectangle at the starting corner
+    	        gc.clearRect(0, 0, Params.world_width * 5, Params.world_height * 5);
+     		}
+     	});
+    	
+    	btnPause.setOnAction(new EventHandler<ActionEvent>(){
       		@Override
       		public void handle(ActionEvent e){
       			timeline.pause(); //pauses the animation
@@ -406,16 +431,7 @@ public class Main extends Application {
       			numOfWorldSteps = 10000;
       		}
         });
-//***************************************************************************************************
-    			//Creating Canvas//
-    	
-    	//create a canvas of a size 5 times the world size.
-    	//the multiplication by 5 is so that we can see the critters with our eyes and they dont overlap each other
-    	    	Canvas canvas = new Canvas(Params.world_width * Params.pixel_scale, Params.world_height * Params.pixel_scale);
-    	//positions the canvas to col 250 and row 25 on the window
-    	    	canvas.setLayoutX(startColGame);
-    	    	canvas.setLayoutY(startRowGame);
-    	    	
+
 //*************************************************************************************************** 
     	    	//adding Nodes to Root & Scene
     	    	
