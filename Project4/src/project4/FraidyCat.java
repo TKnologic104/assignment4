@@ -56,7 +56,7 @@ public class FraidyCat extends Critter{
 	@Override
 	public void doTimeStep() {
 		/* take one step forward */
-		boolean myRandomBoolean = (Critter.getRandomInt(1) == 1);
+		boolean myRandomBoolean = (Critter.getRandomInt(8) > 3);
 		if (myRandomBoolean) {
 			walk(dir);
 		}

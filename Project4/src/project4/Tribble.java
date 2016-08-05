@@ -74,12 +74,15 @@ public class Tribble extends TestCritter{
 	
 	private int lookForEmpty() {
 		int direction = -1;
-		for (int dir = 0; dir <= 7; dir++) {
+		for (int dir = 1; dir <= 7; dir++) {
 			if (getEnergy() - Params.look_energy_cost > 0) 
 				if (look(dir) == null) {
 					direction = dir;
 					break;
 				}
+		}
+		if (direction == -1) {
+			direction = 6;
 		}
 		return direction;
 	}
