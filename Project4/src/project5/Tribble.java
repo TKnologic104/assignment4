@@ -11,7 +11,9 @@
  * Summer 2016
  */
 
-package project4;
+package project5;
+
+import project5.Critter.CritterShape;
 
 //import project4.Critter.TestCritter;
 
@@ -106,4 +108,19 @@ public class Tribble extends Critter{
 		str = str + total_left / (GENE_TOTAL * 0.01 * Tribble.size()) + "% left   ";
 		return str;
 	}
+
+	@Override 
+	public CritterShape viewShape() { 
+		return CritterShape.STAR; 
+	}
+	
+	@Override 
+	public javafx.scene.paint.Color viewOutlineColor() { 
+		return javafx.scene.paint.Color.ORANGE; 
+		}
+
+	@Override 
+	public javafx.scene.paint.Color viewFillColor() { 
+		return javafx.scene.paint.Color.ORANGE; 
+		}
 }

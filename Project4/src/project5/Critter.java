@@ -10,7 +10,7 @@
  * Slip days used: <1>
  * Summer 2016
  */
-package project4;
+package project5;
 
 import java.util.List;
 
@@ -20,7 +20,38 @@ import javax.swing.text.html.HTMLDocument.Iterator;
  * you may add fields, methods or inner classes to Critter ONLY if you make your additions private
  * no new public, protected or default-package code or data can be added to Critter
  */
+
 public abstract class Critter {
+	/* NEW FOR PROJECT 5 */ 
+	public enum CritterShape { CIRCLE, SQUARE, TRIANGLE, DIAMOND, STAR
+	} 
+	/* the default color is white, which I hope makes critters invisible by default
+	 * If you change the background color of your View component, then update the default
+	 * color to be the same as you background  
+	 * *  * critters must override at least one of the following three methods, it is not
+	 * proper for critters to remain invisible in the view  *  
+	 * * If a critter only overrides the outline color, then it will look like a non-filled
+	 * shape, at least, that's the intent. You can edit these default methods however you
+	 * need to, but please preserve that intent as you implement them.  * 
+	 * */ 
+	public javafx.scene.paint.Color viewColor() {
+		return javafx.scene.paint.Color.WHITE;
+	}
+
+	public javafx.scene.paint.Color viewOutlineColor() { 
+		return viewColor(); 
+	} 
+	
+	public javafx.scene.paint.Color viewFillColor() { 
+		return viewColor(); 
+	}
+	
+	public abstract CritterShape viewShape(); 
+	protected String look(int direction, boolean steps) {
+		return null;
+	}
+	
+	
 	private static java.util.Random rand = new java.util.Random();
 	public static int getRandomInt(int max) {
 		return rand.nextInt(max);
@@ -256,6 +287,7 @@ public abstract class Critter {
 		c.setY_coord(Critter.getRandomInt(Params.world_height-1)+1);
 		c.energy = Params.start_energy;
 		population.add(c);
+		System.out.println("make called");
 	}
 	
 	/** gets the list of all the subclasses as specified in the argument
@@ -303,8 +335,6 @@ public abstract class Critter {
 		}
 		return result;
 	}
-	
-		
 	
 	public static void runStats(List<Critter> critters) {
 		System.out.print("" + critters.size() + " critters as follows -- ");
@@ -448,9 +478,9 @@ public abstract class Critter {
 	}
 
 	
-//	public static void displayWorld() {
-//		testing.launch(testing.class);
-//	}
+	public static void displayWorld() {
+		ViewController.launch(ViewController.class);
+	}
 	
 	public static void displayWorldOld() {
 		//fills whole grid with " ".

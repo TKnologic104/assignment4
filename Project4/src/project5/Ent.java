@@ -11,42 +11,34 @@
  * Summer 2016
  */
 
-package project4;
+package project5;
 
-//import project4.Critter.TestCritter;
+import project5.Critter.CritterShape;
 
-public class FraidyCat extends Critter{
+public class Ent extends Critter {
 	
 	@Override
-	public String toString() { return "F"; }
+	public String toString() { return "E"; }
 	
 	private static final int GENE_TOTAL = 24;
 	private int[] genes = new int[8];
 	private int dir;
-
 	
-	public FraidyCat() {
+	public Ent() {
 		for (int k = 0; k < 8; k += 1) {
 			genes[k] = GENE_TOTAL / 8;
 		}
 		dir = Critter.getRandomInt(8);
 	}
 	
-	public boolean fight(String not_used) { 
-		run(dir);
-		return false; 
-	}
+	public boolean fight(String not_used) { return true; }
 
 	@Override
 	public void doTimeStep() {
-		/* take one step forward */
-		boolean myRandomBoolean = (Critter.getRandomInt(1) == 1);
-		if (myRandomBoolean) {
-			walk(dir);
-		}
+
 		
-		if (getEnergy() > (Params.start_energy - Params.min_reproduce_energy)) {
-			FraidyCat child = new FraidyCat();
+		if (getEnergy() > Params.min_reproduce_energy + Params.start_energy) {
+			Ent child = new Ent();
 			for (int k = 0; k < 8; k += 1) {
 				child.genes[k] = this.genes[k];
 			}
@@ -72,43 +64,58 @@ public class FraidyCat extends Critter{
 		dir = (dir + turn) % 8;
 	}
 
-	public static void runStats(java.util.List<Critter> FraidyCats) {
+	public static void runStats(java.util.List<Critter> Ents) {
 		int total_straight = 0;
 		int total_left = 0;
 		int total_right = 0;
 		int total_back = 0;
-		for (Object obj : FraidyCats) {
-			FraidyCat c = (FraidyCat) obj;
+		for (Object obj : Ents) {
+			Ent c = (Ent) obj;
 			total_straight += c.genes[0];
 			total_right += c.genes[1] + c.genes[2] + c.genes[3];
 			total_back += c.genes[4];
 			total_left += c.genes[5] + c.genes[6] + c.genes[7];
 		}
-		System.out.print("" + FraidyCats.size() + " total FraidyCats    ");
-		System.out.print("" + total_straight / (GENE_TOTAL * 0.01 * FraidyCats.size()) + "% straight   ");
-		System.out.print("" + total_back / (GENE_TOTAL * 0.01 * FraidyCats.size()) + "% back   ");
-		System.out.print("" + total_right / (GENE_TOTAL * 0.01 * FraidyCats.size()) + "% right   ");
-		System.out.print("" + total_left / (GENE_TOTAL * 0.01 * FraidyCats.size()) + "% left   ");
+		System.out.print("" + Ents.size() + " total Ents    ");
+		System.out.print("" + total_straight / (GENE_TOTAL * 0.01 * Ents.size()) + "% straight   ");
+		System.out.print("" + total_back / (GENE_TOTAL * 0.01 * Ents.size()) + "% back   ");
+		System.out.print("" + total_right / (GENE_TOTAL * 0.01 * Ents.size()) + "% right   ");
+		System.out.print("" + total_left / (GENE_TOTAL * 0.01 * Ents.size()) + "% left   ");
 		System.out.println();
 	}
-	
-	public static String runStatsString(java.util.List<Critter> FraidyCats) {
+
+	public static String runStatsString(java.util.List<Critter> Ents) {
 		int total_straight = 0;
 		int total_left = 0;
 		int total_right = 0;
 		int total_back = 0;
-		for (Object obj : FraidyCats) {
-			FraidyCat c = (FraidyCat) obj;
+		for (Object obj : Ents) {
+			Ent c = (Ent) obj;
 			total_straight += c.genes[0];
 			total_right += c.genes[1] + c.genes[2] + c.genes[3];
 			total_back += c.genes[4];
 			total_left += c.genes[5] + c.genes[6] + c.genes[7];
 		}
-		String str = FraidyCats.size() + " total FraidyCats    ";
-		str = str + total_straight / (GENE_TOTAL * 0.01 * FraidyCats.size()) + "% straight   ";
-		str = str + total_back / (GENE_TOTAL * 0.01 * FraidyCats.size()) + "% back   ";
-		str = str + total_right / (GENE_TOTAL * 0.01 * FraidyCats.size()) + "% right   ";
-		str = str + total_left / (GENE_TOTAL * 0.01 * FraidyCats.size()) + "% left   ";
+		String str = Ents.size() + " total Ent's    ";
+		str = str + total_straight / (GENE_TOTAL * 0.01 * Ents.size()) + "% straight   ";
+		str = str + total_back / (GENE_TOTAL * 0.01 * Ents.size()) + "% back   ";
+		str = str + total_right / (GENE_TOTAL * 0.01 * Ents.size()) + "% right   ";
+		str = str + total_left / (GENE_TOTAL * 0.01 * Ents.size()) + "% left   ";
 		return str;
 	}
+
+	@Override 
+	public CritterShape viewShape() { 
+		return CritterShape.TRIANGLE; 
+	}
+	
+	@Override 
+	public javafx.scene.paint.Color viewOutlineColor() { 
+		return javafx.scene.paint.Color.GREEN; 
+		}
+
+	@Override 
+	public javafx.scene.paint.Color viewFillColor() { 
+		return javafx.scene.paint.Color.GREEN; 
+		}
 }
