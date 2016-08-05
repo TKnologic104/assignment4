@@ -34,7 +34,6 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
 //controls the animation speed - how many frames to be displayed in seconds
-	double framesPerSec = 0.5;
 	int countWithout = 1;
 	int countWithoutShow = 1;
 	int numOfWorldSteps = 1;
@@ -56,7 +55,7 @@ public class Main extends Application {
     	GridPane grid = new GridPane();
 //sets the columns width of desired nunmber of pixels
     	
-    	grid.getColumnConstraints().add(new ColumnConstraints(75)); //the 0th columns
+    	grid.getColumnConstraints().add(new ColumnConstraints(80)); //the 0th columns
     	grid.getColumnConstraints().add(new ColumnConstraints(120)); //the first column
     	grid.getColumnConstraints().add(new ColumnConstraints(75)); //the second column
     	grid.setPadding(new Insets(10, 10, 10, 10)); //create a padding around the grid
@@ -69,27 +68,35 @@ public class Main extends Application {
     	GridPane.setConstraints(btnPause,0,0);
 //adds the button to the grid
     	grid.getChildren().add(btnPause);
-/*** below code just creates new buttons, labels, radiobuttons etc and adds them to pane ***/
+
+   
+//***************************************************************************************************//    	
+  /*** below code just creates new buttons, labels, radiobuttons etc and adds them to pane ***/
 		Button btnPlay = new Button("PLAY");
     	GridPane.setConstraints(btnPlay,1,0);
     	grid.getChildren().add(btnPlay);
-		Button btnQuit = new Button("QUIT");
+		
+      	Button btnQuit = new Button("QUIT");
     	GridPane.setConstraints(btnQuit,2,0);
     	grid.getChildren().add(btnQuit);
-		TextField num1 = new TextField();
+    	
+    	TextField num1 = new TextField();
 		num1.setMaxWidth(50);
 		num1.setText("1");
-    	GridPane.setConstraints(num1,0,1);
+ 		GridPane.setConstraints(num1,0,1);
     	grid.getChildren().add(num1);
-		Button btnSeed = new Button("SEED");
+	
+    	Button btnSeed = new Button("SEED");
     	GridPane.setConstraints(btnSeed,1,1);
     	grid.getChildren().add(btnSeed);
-		TextField num2 = new TextField();
+		
+    	TextField num2 = new TextField();
 		num2.setMaxWidth(50);
 		num2.setText("1");
     	GridPane.setConstraints(num2,0,2);
     	grid.getChildren().add(num2);
-		ComboBox<String> critterMakeCombo = new ComboBox<>();
+
+    	ComboBox<String> critterMakeCombo = new ComboBox<>();
 		critterMakeCombo.getItems().addAll(
 				"Dumbo",
 				"Ent",
@@ -99,10 +106,12 @@ public class Main extends Application {
 		critterMakeCombo.setValue("Dumbo");
     	GridPane.setConstraints(critterMakeCombo,1,2);
     	grid.getChildren().add(critterMakeCombo);
-		Button btnMake = new Button("MAKE");
+		
+    	Button btnMake = new Button("MAKE");
     	GridPane.setConstraints(btnMake,2,2);
     	grid.getChildren().add(btnMake);
-		ComboBox<String> critterStatsCombo = new ComboBox();
+		
+    	ComboBox<String> critterStatsCombo = new ComboBox<String>();
 		critterStatsCombo.getItems().addAll(
 				"Dumbo",
 				"Ent",
@@ -113,11 +122,14 @@ public class Main extends Application {
 		critterStatsCombo.setValue("Critter");
     	GridPane.setConstraints(critterStatsCombo,1,3);
     	grid.getChildren().add(critterStatsCombo);
-		Button btnStats = new Button("STATS");
+		
+    	Button btnStats = new Button("STATS");
     	GridPane.setConstraints(btnStats,2,3);
     	grid.getChildren().add(btnStats);
 
-    	Label lbAnim = new Label("Animation Speed");
+    	Label lbAnim = new Label("Animation");
+    	Label lbAnim2 = new Label("Speed");
+    	
     	RadioButton rb1 = new RadioButton("1/100");
     	RadioButton rb2 = new RadioButton("1/50");
     	RadioButton rb3 = new RadioButton("1/20");
@@ -131,23 +143,28 @@ public class Main extends Application {
 		RadioButton rb11 = new RadioButton("20");
 		RadioButton rb12 = new RadioButton("50");
 		RadioButton rb13 = new RadioButton("100");
+		
 		ToggleGroup tg = new ToggleGroup();
 		tg.getToggles().addAll(rb1, rb2, rb3, rb4, rb5, rb6, rb7, rb8, rb9, rb10, rb11, rb12, rb13);
-    	GridPane.setConstraints(lbAnim,0,4);
-    	GridPane.setConstraints(rb1,0,5);
-    	GridPane.setConstraints(rb2,0,6);
-    	GridPane.setConstraints(rb3,0,7);
-    	GridPane.setConstraints(rb4,0,8);
-    	GridPane.setConstraints(rb5,0,9);
-    	GridPane.setConstraints(rb6,0,10);
-    	GridPane.setConstraints(rb7,0,11);
-    	GridPane.setConstraints(rb8,0,12);
-    	GridPane.setConstraints(rb9,0,13);
-    	GridPane.setConstraints(rb10,0,14);
-    	GridPane.setConstraints(rb11,0,15);
-    	GridPane.setConstraints(rb12,0,16);
-    	GridPane.setConstraints(rb13,0,17);
+    	
+		GridPane.setConstraints(lbAnim,0,4);
+    	GridPane.setConstraints(lbAnim2,0,5);
+    	GridPane.setConstraints(rb1,0,6);
+    	GridPane.setConstraints(rb2,0,7);
+    	GridPane.setConstraints(rb3,0,8);
+    	GridPane.setConstraints(rb4,0,9);
+    	GridPane.setConstraints(rb5,0,10);
+    	GridPane.setConstraints(rb6,0,11);
+    	GridPane.setConstraints(rb7,0,12);
+    	GridPane.setConstraints(rb8,0,13);
+    	GridPane.setConstraints(rb9,0,14);
+    	GridPane.setConstraints(rb10,0,15);
+    	GridPane.setConstraints(rb11,0,16);
+    	GridPane.setConstraints(rb12,0,17);
+    	GridPane.setConstraints(rb13,0,18);
+    	
     	grid.getChildren().add(lbAnim);
+    	grid.getChildren().add(lbAnim2);
     	grid.getChildren().add(rb1);
     	grid.getChildren().add(rb2);
     	grid.getChildren().add(rb3);
@@ -172,9 +189,11 @@ public class Main extends Application {
 		RadioButton rb20 = new RadioButton("100");
 		RadioButton rb21 = new RadioButton("1000");
 		RadioButton rb22 = new RadioButton("10000");
+		
 		ToggleGroup tg2 = new ToggleGroup();
 		tg2.getToggles().addAll(rb14, rb15, rb16, rb17, rb18, rb19, rb20, rb21, rb22);
-    	GridPane.setConstraints(lbSteps,1,4);
+    	
+		GridPane.setConstraints(lbSteps,1,4);
     	GridPane.setConstraints(rb14,1,5);
     	GridPane.setConstraints(rb15,1,6);
     	GridPane.setConstraints(rb16,1,7);
@@ -194,8 +213,11 @@ public class Main extends Application {
     	grid.getChildren().add(rb20);
     	grid.getChildren().add(rb21);
     	grid.getChildren().add(rb22);
-/*** above code just creates new buttons, labels, radiobuttons etc and adds them to pane ***/
-//create a new grid to display the runstats message
+    	
+//********************************************************************************************//
+    	//						STATS GRID
+    	
+    	//create a new grid to display the runstats message
     	GridPane gridMsg = new GridPane();
 //instead of default position this grid to col startColGame
     	gridMsg.setLayoutX(startColGame);
@@ -206,9 +228,12 @@ public class Main extends Application {
 //add that label to the gridMsg    	
     	gridMsg.getChildren().add(lb);
 		
-//controls the animation
+//***********************************************************************************************//    	
+    	//implements the button functionality
+    	
+    	
+    	//controls the animation
     	Timeline timeline = new Timeline();
-
  	
 /***below code is trap and handle the events triggered by the keyboard and mouse and animation***/
      	btnPause.setOnAction(new EventHandler<ActionEvent>(){
@@ -224,6 +249,7 @@ public class Main extends Application {
       			timeline.play(); //plays the animation
       		}
       	});
+     	
      	btnQuit.setOnAction(new EventHandler<ActionEvent>(){
       		@Override
       		public void handle(ActionEvent e){
@@ -231,6 +257,7 @@ public class Main extends Application {
       		}
 
       	});
+     	
      	btnSeed.setOnAction(new EventHandler<ActionEvent>(){
       		@Override
       		public void handle(ActionEvent e){
@@ -241,6 +268,7 @@ public class Main extends Application {
   				}
       		}
       	});
+     	
      	btnMake.setOnAction(new EventHandler<ActionEvent>(){
       		@Override
       		public void handle(ActionEvent e){
@@ -328,7 +356,7 @@ public class Main extends Application {
       		@Override
       		public void handle(ActionEvent e){
       			countWithoutShow = -50;
- //     			duration = new Duration(framesPerSec);
+
       		}
         });
     	rb13.setOnAction(new EventHandler<ActionEvent>(){
@@ -368,70 +396,44 @@ public class Main extends Application {
       			numOfWorldSteps = 10000;
       		}
         });
-/***above code is trap and handle the events triggered by the keyboard and mouse and animation***/
+//***************************************************************************************************
+    			//Creating Canvas//
     	
     	//create a canvas of a size 5 times the world size.
     	//the multiplication by 5 is so that we can see the critters with our eyes and they dont overlap each other
-    	    	Canvas canvas = new Canvas(Params.world_width * 5, Params.world_height * 5);
+    	    	Canvas canvas = new Canvas(Params.world_width * Params.pixel_scale, Params.world_height * Params.pixel_scale);
     	//positions the canvas to col 250 and row 25 on the window
     	    	canvas.setLayoutX(startColGame);
     	    	canvas.setLayoutY(startRowGame);
+    	    	
+//*************************************************************************************************** 
+    	    	//adding Nodes to Root & Scene
+    	    	
     	//adds the grid, canvas and gridMsg to the root
         root.getChildren().add(grid);
         root.getChildren().add(canvas);
         root.getChildren().add(gridMsg);
-//adds the root to the scene and the scene to the stage
+        //adds the root to the scene and the scene to the stage
     	primaryStage.setScene(new Scene(root));
 
-//sets the timeline for the animation to infinite    	
+    	//sets the time line for the animation to infinite    	
         timeline.setCycleCount(Timeline.INDEFINITE); 
-//event to handle the key frame.
-//here we will make changes to the frame after every interruption
-//the interruption is based on the time in Duration controlling how many frames to be dispplayed per sec
-/*
-        KeyFrame kf = new KeyFrame(
-        		 Duration.seconds(framesPerSec),                //1 frame per sec
-        		 
-                 new EventHandler<ActionEvent>(){
-                     public void handle(ActionEvent ae)
-                 {
-                    	 animate(gc,lb,critterStatsCombo.getValue());
-                }
-             }
-        );
-		            
-*/
-/* 
-        AnimationTimer timer = new AnimationTimer() {
-            @Override
-            public void handle(long l) {
-                for (int i = 0; i < numOfWorldSteps; i++){
-                    Critter.worldTimeStep();
-                }
 
-            }
-        };
-*/
+        Duration duration = Duration.seconds(0.5);
         
-        Duration duration = Duration.seconds(framesPerSec);
-        
-//        EventHandler startEvent = new EventHandler<ActionEvent>() {
-//            public void handle(ActionEvent t) {
-//            }
-//        };
+
         countWithout = countWithoutShow;
-        EventHandler endEvent = new EventHandler<ActionEvent>() {
+        EventHandler<ActionEvent> endEvent = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
                 timeline.pause();       
-//            	System.out.println(System.currentTimeMillis());
-//            	System.out.println(countWithout);
-//            	System.out.println("steps;"+ numOfWorldSteps);
+
+                //MANUAL DELAY
             	if (countWithout > 1){
             		countWithout--;
             	}
+            	
             	else {
             		countWithout = countWithoutShow;
-//            		duration = Duration.seconds(framesPerSec);
             		for (int i = 0; i < numOfWorldSteps; i++){
             			Critter.worldTimeStep();
             		}
@@ -440,7 +442,7 @@ public class Main extends Application {
                 timeline.play();       
             }
         };
-//        KeyFrame kf1 = new KeyFrame(Duration.ZERO, startEvent);
+
         KeyFrame kf2 = new KeyFrame(duration, endEvent);
         timeline.getKeyFrames().addAll(kf2);
 

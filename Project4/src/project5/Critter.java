@@ -31,8 +31,6 @@ import javafx.scene.text.Font;
 
 public abstract class Critter {
 	/* NEW FOR PROJECT 5 */ 
-	static final int p = 5; //number of pixels for each coordinate in the game
-	static final int q = 5; //number of pixels in a row for each critter shape
 
 	public enum CritterShape { CIRCLE, SQUARE, TRIANGLE, DIAMOND, STAR
 	} 
@@ -529,6 +527,8 @@ public abstract class Critter {
 		
 	private static void drawShapes(GraphicsContext gc) {
 //		gc.setFont(new Font(STYLESHEET_CASPIAN,5));
+		int p = Params.pixel_scale;
+		int q = Params.icon_scale;
 			for (int i = 1; i <= Params.world_height;i++){
 				for (int j = 1; j <= Params.world_width;j++){
 					for (int k = 0; k < Critter.getPopulation().size(); k++){
@@ -540,7 +540,7 @@ public abstract class Critter {
 //							gc.drawImage(img, 10 + j * 5, i * 5, 5, 5);
 							String str = Critter.getPopulation().get(k).viewShape().toString();
 							if (str.equals("CIRCLE")){
-								gc.fillOval(j * p, i * p, q/2,q/2);
+								gc.fillOval(j * p, i * p, q ,q);
 							}
 							if (str.equals("SQUARE")){
 								gc.fillRect(j * p, i * p, q, q);
