@@ -139,17 +139,17 @@ public class Tribble extends TestCritter{
 
 	@Override 
 	public CritterShape viewShape() { 
-		return CritterShape.STAR; 
+		return CritterShape.ARC; 
 	}
 	
 	@Override 
 	public javafx.scene.paint.Color viewOutlineColor() { 
-		return javafx.scene.paint.Color.ORANGE; 
+		return javafx.scene.paint.Color.BROWN; 
 		}
 
 	@Override 
 	public javafx.scene.paint.Color viewFillColor() { 
-		return javafx.scene.paint.Color.ORANGE; 
+		return javafx.scene.paint.Color.BROWN; 
 		}
 	
 }

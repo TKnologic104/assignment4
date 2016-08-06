@@ -16,6 +16,7 @@ import java.util.List;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.ArcType;
 import javafx.scene.text.Font;
 import javax.swing.text.html.HTMLDocument.Iterator;
 import javafx.scene.canvas.Canvas;
@@ -35,7 +36,8 @@ public abstract class Critter {
 		SQUARE,
 		TRIANGLE,
 		DIAMOND,
-		STAR
+		STAR,
+		ARC
 	}
 	
 	/* the default color is white, which I hope makes critters invisible by default
@@ -669,10 +671,8 @@ public abstract class Critter {
 				                       		new double[]{i*p+q*.5,(i*p),i*p+q*.5,i*p+(q*1.0)}, 
 				                       		4);
 							}
-							if (str.equals("STAR")){
-								 gc.strokePolygon(new double[]{j*p,j*p+q/2,j*p+q,j*p+q/2},
-				                       		new double[]{i*p+q,i*p,i*p+q,i*p+(q*2)}, 
-				                       		4);
+							if (str.equals("ARC")){
+						        gc.fillArc(j*p, i*p, q, q, 45, 240, ArcType.ROUND);
 							}
 							break;
 						}
