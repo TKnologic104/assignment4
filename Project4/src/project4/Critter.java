@@ -1,6 +1,6 @@
 /* CRITTERS <MyClass.java>
  * https://github.com/MattDaumas/assignment4.git
- * EE422C Project 4 submission by
+ * EE422C Project 4b submission by
  * Tarang Khandpur
  * tk8435
  * 76595
